@@ -44,3 +44,7 @@ vendor/
 .jekyll-metadata
 .sass-cache/
 _site/
+
+# new additions since fork
+install/
+
