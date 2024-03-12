@@ -47,4 +47,6 @@ _site/
 
 # new additions since fork
 install/
+CMakeCache.txt
+CMakeFiles/
 

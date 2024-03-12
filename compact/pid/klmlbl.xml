@@ -1,0 +1,1192 @@
+<!-- KLM implementation with each layer dimension customizable. Based on ePIC Solenoid description. -->
+<!-- From original Solenoid description: SPDX-License-Identifier: LGPL-3.0-or-later -->
+<!-- From original Solenoid description: Copyright (C) 2022 Wouter Deconinck, Whitney Armstrong -->
+
+<lccdd>
+  <define>
+    <comment>
+      --------------------------
+      Solenoid Magnet Parameters
+      --------------------------
+    </comment>
+    <comment>shape parameters that should be set in dfinitions.xml or equivalent</comment>
+    <constant name="KLM_length"		value=" 6000 * mm"/>
+    <constant name="KLM_rmin"		value=" 1400 * mm"/>
+    <constant name="KLM_thickness"	value=" 1100 * mm"/>
+    <constant name="KLM_offset"		value=" -100 * mm"/>
+
+    <constant name="KLM_rmax"			value="KLM_rmin + KLM_thickness"/>
+    <constant name="KLMForward_zmax"		value="KLM_length/2.0 + KLM_offset"/>
+    <constant name="KLMBackward_zmax"		value="KLM_length/2.0 - KLM_offset"/>
+    <constant name="KLMBarrel_rmin"		value="KLM_rmin"/>
+    <constant name="KLMBarrel_length"		value="KLM_length"/>
+
+    <comment>KLM Barrel Parameters</comment>
+    <constant name="KLMBarrelFirstSteelLayerThickness"		value=" 55.5 * mm"/>
+    <constant name="KLMBarrelSteelLayerThickness"		value=" 55.5 * mm"/>
+    <constant name="KLMBarrelAluminumCaseThickness"		value="  2.5 * mm"/>
+    <constant name="KLMBarrelScintillatorThickness"		value="  7.5 * mm"/>
+    <constant name="KLMBarrelGapThickness"                      value=" 1.25 * mm"/>
+    <constant name="KLMBarrelInnerGapThickness"                 value=" 1.25 * mm"/>
+    <constant name="KLMBarrelOuterGapThickness"                 value=" 1.25 * mm"/>
+
+    <comment>KLM Barrel Layers</comment>
+    <constant name="KLMBarrelFirstSteelLayer_rmin"		value="KLM_rmin"/>
+    <constant name="KLMBarrelFirstInnerGap_rmin"		value="KLM_rmin + KLMBarrelFirstSteelLayerThickness"/>
+    <constant name="KLMBarrelFirstInnerAluminumCase_rmin"	value="KLMBarrelFirstInnerGap_rmin + KLMBarrelInnerGapThickness"/>
+    <constant name="KLMBarrelFirstInnerScintillator_rmin"	value="KLMBarrelFirstInnerAluminumCase_rmin + KLMBarrelAluminumCaseThickness"/>
+    <constant name="KLMBarrelFirstOuterScintillator_rmin"	value="KLMBarrelFirstInnerScintillator_rmin + KLMBarrelScintillatorThickness"/>
+    <constant name="KLMBarrelFirstOuterAluminumCase_rmin"	value="KLMBarrelFirstOuterScintillator_rmin + KLMBarrelScintillatorThickness"/>
+    <constant name="KLMBarrelFirstOuterGap_rmin"                value="KLMBarrelFirstOuterAluminumCase_rmin + KLMBarrelAluminumCaseThickness"/>
+    <constant name="KLMBarrelFirstSuperLayerThickness"		value="KLMBarrelFirstSteelLayerThickness + KLMBarrelAluminumCaseThickness * 2.0 + KLMBarrelScintillatorThickness * 2.0 + 2.0 * KLMBarrelGapThickness"/>
+
+    <constant name="KLMBarrelSecondSteelLayerThickness"		value="KLMBarrelFirstSteelLayerThickness"/>
+    <constant name="KLML2_rmin"					value="KLM_rmin + KLMBarrelFirstSuperLayerThickness"/>
+    <constant name="KLMBarrelSecondSteelLayer_rmin"		value="KLML2_rmin"/>
+    <constant name="KLMBarrelSecondInnerGap_rmin"		value="KLML2_rmin + KLMBarrelSteelLayerThickness"/>
+    <constant name="KLMBarrelSecondInnerAluminumCase_rmin"	value="KLMBarrelSecondInnerGap_rmin + KLMBarrelInnerGapThickness"/>
+    <constant name="KLMBarrelSecondInnerScintillator_rmin"	value="KLMBarrelSecondInnerAluminumCase_rmin + KLMBarrelAluminumCaseThickness"/>
+    <constant name="KLMBarrelSecondOuterScintillator_rmin"	value="KLMBarrelSecondInnerAluminumCase_rmin + KLMBarrelAluminumCaseThickness + KLMBarrelScintillatorThickness"/>
+    <constant name="KLMBarrelSecondOuterAluminumCase_rmin"	value="KLMBarrelSecondInnerScintillator_rmin + KLMBarrelScintillatorThickness * 2.0"/>
+    <constant name="KLMBarrelSecondOuterGap_rmin"		value="KLMBarrelSecondOuterAluminumCase_rmin + KLMBarrelAluminumCaseThickness"/>
+    <constant name="KLMBarrelSecondSuperLayerThickness"		value="KLMBarrelSecondSteelLayerThickness + KLMBarrelAluminumCaseThickness * 2.0 + KLMBarrelScintillatorThickness * 2.0 + 2.0 * KLMBarrelGapThickness"/>
+
+    <constant name="KLML3_rmin"					value="KLML2_rmin + KLMBarrelSecondSuperLayerThickness"/>
+    <constant name="KLMBarrelSteelLayer03_rmin"			value="KLML3_rmin"/>
+    <constant name="KLMBarrelInnerGap03_rmin"			value="KLML3_rmin + KLMBarrelSteelLayerThickness"/>
+    <constant name="KLMBarrelInnerAluminumCase03_rmin"		value="KLMBarrelInnerGap03_rmin + KLMBarrelInnerGapThickness"/>
+    <constant name="KLMBarrelInnerScintillator03_rmin"		value="KLMBarrelInnerAluminumCase03_rmin + KLMBarrelAluminumCaseThickness"/>
+    <constant name="KLMBarrelOuterScintillator03_rmin"		value="KLMBarrelInnerScintillator03_rmin + KLMBarrelScintillatorThickness"/>
+    <constant name="KLMBarrelOuterAluminumCase03_rmin"		value="KLMBarrelOuterScintillator03_rmin + KLMBarrelScintillatorThickness"/>
+    <constant name="KLMBarrelOuterGap03_rmin"			value="KLMBarrelOuterAluminumCase03_rmin + KLMBarrelAluminumCaseThickness"/>
+    <constant name="KLMBarrelSuperLayer03Thickness"		value="KLMBarrelSecondSuperLayerThickness"/>
+    
+    <constant name="KLML04_rmin"				value="KLML3_rmin + KLMBarrelSecondSuperLayerThickness"/>
+    <constant name="KLMBarrelSteelLayer04_rmin"			value="KLML04_rmin"/>
+    <constant name="KLMBarrelInnerGap04_rmin"			value="KLML04_rmin + KLMBarrelSteelLayerThickness"/>
+    <constant name="KLMBarrelInnerAluminumCase04_rmin"		value="KLMBarrelInnerGap04_rmin + KLMBarrelInnerGapThickness"/>
+    <constant name="KLMBarrelInnerScintillator04_rmin"		value="KLMBarrelInnerAluminumCase04_rmin + KLMBarrelAluminumCaseThickness"/>
+    <constant name="KLMBarrelOuterScintillator04_rmin"		value="KLMBarrelInnerScintillator04_rmin + KLMBarrelScintillatorThickness"/>
+    <constant name="KLMBarrelOuterAluminumCase04_rmin"		value="KLMBarrelOuterScintillator04_rmin + KLMBarrelScintillatorThickness"/>
+    <constant name="KLMBarrelOuterGap04_rmin"			value="KLMBarrelOuterAluminumCase04_rmin + KLMBarrelAluminumCaseThickness"/>
+    <constant name="KLMBarrelSuperLayer04Thickness"		value="KLMBarrelSecondSuperLayerThickness"/>
+
+
+
+    <constant name="KLML05_rmin"				value="KLML04_rmin + KLMBarrelSecondSuperLayerThickness"/>
+    <constant name="KLMBarrelSteelLayer05_rmin"			value="KLML05_rmin"/>
+
+    <constant name="KLMBarrelInnerGap05_rmin"			value="KLML05_rmin + KLMBarrelSteelLayerThickness"/>
+    <constant name="KLMBarrelInnerAluminumCase05_rmin"		value="KLMBarrelInnerGap05_rmin + KLMBarrelInnerGapThickness"/>
+    <constant name="KLMBarrelInnerScintillator05_rmin"		value="KLMBarrelInnerAluminumCase05_rmin + KLMBarrelAluminumCaseThickness"/>
+    <constant name="KLMBarrelOuterScintillator05_rmin"		value="KLMBarrelInnerScintillator05_rmin + KLMBarrelScintillatorThickness"/>
+    <constant name="KLMBarrelOuterAluminumCase05_rmin"		value="KLMBarrelOuterScintillator05_rmin + KLMBarrelScintillatorThickness"/>
+    <constant name="KLMBarrelOuterGap05_rmin"			value="KLMBarrelOuterAluminumCase05_rmin + KLMBarrelAluminumCaseThickness"/>
+    <constant name="KLMBarrelSuperLayer05Thickness"		value="KLMBarrelSecondSuperLayerThickness"/>
+
+
+    <constant name="KLML06_rmin"				value="KLML05_rmin + KLMBarrelSecondSuperLayerThickness"/>
+    <constant name="KLMBarrelSteelLayer06_rmin"			value="KLML06_rmin"/>
+
+    <constant name="KLMBarrelInnerGap06_rmin"			value="KLML06_rmin + KLMBarrelSteelLayerThickness"/>
+    <constant name="KLMBarrelInnerAluminumCase06_rmin"		value="KLMBarrelInnerGap06_rmin + KLMBarrelInnerGapThickness"/>
+    <constant name="KLMBarrelInnerScintillator06_rmin"		value="KLMBarrelInnerAluminumCase06_rmin + KLMBarrelAluminumCaseThickness"/>
+    <constant name="KLMBarrelOuterScintillator06_rmin"		value="KLMBarrelInnerScintillator06_rmin + KLMBarrelScintillatorThickness"/>
+    <constant name="KLMBarrelOuterAluminumCase06_rmin"		value="KLMBarrelOuterScintillator06_rmin + KLMBarrelScintillatorThickness"/>
+    <constant name="KLMBarrelOuterGap06_rmin"			value="KLMBarrelOuterAluminumCase06_rmin + KLMBarrelAluminumCaseThickness"/>
+    <constant name="KLMBarrelSuperLayer06Thickness"		value="KLMBarrelSecondSuperLayerThickness"/>
+
+
+    <constant name="KLML07_rmin"				value="KLML06_rmin + KLMBarrelSecondSuperLayerThickness"/>
+    <constant name="KLMBarrelSteelLayer07_rmin"			value="KLML07_rmin"/>
+
+    <constant name="KLMBarrelInnerGap07_rmin"			value="KLML07_rmin + KLMBarrelSteelLayerThickness"/>
+    <constant name="KLMBarrelInnerAluminumCase07_rmin"		value="KLMBarrelInnerGap07_rmin + KLMBarrelInnerGapThickness"/>
+    <constant name="KLMBarrelInnerScintillator07_rmin"		value="KLMBarrelInnerAluminumCase07_rmin + KLMBarrelAluminumCaseThickness"/>
+    <constant name="KLMBarrelOuterScintillator07_rmin"		value="KLMBarrelInnerScintillator07_rmin + KLMBarrelScintillatorThickness"/>
+    <constant name="KLMBarrelOuterAluminumCase07_rmin"		value="KLMBarrelOuterScintillator07_rmin + KLMBarrelScintillatorThickness"/>
+    <constant name="KLMBarrelOuterGap07_rmin"			value="KLMBarrelOuterAluminumCase07_rmin + KLMBarrelAluminumCaseThickness"/>
+    <constant name="KLMBarrelSuperLayer07Thickness"		value="KLMBarrelSecondSuperLayerThickness"/>
+
+
+    <constant name="KLML08_rmin"				value="KLML07_rmin + KLMBarrelSecondSuperLayerThickness"/>
+    <constant name="KLMBarrelSteelLayer08_rmin"			value="KLML08_rmin"/>
+
+    <constant name="KLMBarrelInnerGap08_rmin"			value="KLML08_rmin + KLMBarrelSteelLayerThickness"/>
+    <constant name="KLMBarrelInnerAluminumCase08_rmin"		value="KLMBarrelInnerGap08_rmin + KLMBarrelInnerGapThickness"/>
+    <constant name="KLMBarrelInnerScintillator08_rmin"		value="KLMBarrelInnerAluminumCase08_rmin + KLMBarrelAluminumCaseThickness"/>
+    <constant name="KLMBarrelOuterScintillator08_rmin"		value="KLMBarrelInnerScintillator08_rmin + KLMBarrelScintillatorThickness"/>
+    <constant name="KLMBarrelOuterAluminumCase08_rmin"		value="KLMBarrelOuterScintillator08_rmin + KLMBarrelScintillatorThickness"/>
+    <constant name="KLMBarrelOuterGap08_rmin"			value="KLMBarrelOuterAluminumCase08_rmin + KLMBarrelAluminumCaseThickness"/>
+    <constant name="KLMBarrelSuperLayer08Thickness"		value="KLMBarrelSecondSuperLayerThickness"/>
+
+
+    <constant name="KLML09_rmin"				value="KLML08_rmin + KLMBarrelSecondSuperLayerThickness"/>
+    <constant name="KLMBarrelSteelLayer09_rmin"			value="KLML09_rmin"/>
+
+    <constant name="KLMBarrelInnerGap09_rmin"			value="KLML09_rmin + KLMBarrelSteelLayerThickness"/>
+    <constant name="KLMBarrelInnerAluminumCase09_rmin"		value="KLMBarrelInnerGap09_rmin + KLMBarrelInnerGapThickness"/>
+    <constant name="KLMBarrelInnerScintillator09_rmin"		value="KLMBarrelInnerAluminumCase09_rmin + KLMBarrelAluminumCaseThickness"/>
+    <constant name="KLMBarrelOuterScintillator09_rmin"		value="KLMBarrelInnerScintillator09_rmin + KLMBarrelScintillatorThickness"/>
+    <constant name="KLMBarrelOuterAluminumCase09_rmin"		value="KLMBarrelOuterScintillator09_rmin + KLMBarrelScintillatorThickness"/>
+    <constant name="KLMBarrelOuterGap09_rmin"			value="KLMBarrelOuterAluminumCase09_rmin + KLMBarrelAluminumCaseThickness"/>
+    <constant name="KLMBarrelSuperLayer09Thickness"		value="KLMBarrelSecondSuperLayerThickness"/>
+
+
+    <constant name="KLML10_rmin"				value="KLML09_rmin + KLMBarrelSecondSuperLayerThickness"/>
+    <constant name="KLMBarrelSteelLayer10_rmin"			value="KLML10_rmin"/>
+
+    <constant name="KLMBarrelInnerGap10_rmin"			value="KLML10_rmin + KLMBarrelSteelLayerThickness"/>
+    <constant name="KLMBarrelInnerAluminumCase10_rmin"		value="KLMBarrelInnerGap10_rmin + KLMBarrelInnerGapThickness"/>
+    <constant name="KLMBarrelInnerScintillator10_rmin"		value="KLMBarrelInnerAluminumCase10_rmin + KLMBarrelAluminumCaseThickness"/>
+    <constant name="KLMBarrelOuterScintillator10_rmin"		value="KLMBarrelInnerScintillator10_rmin + KLMBarrelScintillatorThickness"/>
+    <constant name="KLMBarrelOuterAluminumCase10_rmin"		value="KLMBarrelOuterScintillator10_rmin + KLMBarrelScintillatorThickness"/>
+    <constant name="KLMBarrelOuterGap10_rmin"			value="KLMBarrelOuterAluminumCase10_rmin + KLMBarrelAluminumCaseThickness"/>
+    <constant name="KLMBarrelSuperLayer10Thickness"		value="KLMBarrelSecondSuperLayerThickness"/>
+
+
+    <constant name="KLML11_rmin"				value="KLML10_rmin + KLMBarrelSecondSuperLayerThickness"/>
+    <constant name="KLMBarrelSteelLayer11_rmin"			value="KLML11_rmin"/>
+
+    <constant name="KLMBarrelInnerGap11_rmin"			value="KLML11_rmin + KLMBarrelSteelLayerThickness"/>
+    <constant name="KLMBarrelInnerAluminumCase11_rmin"		value="KLMBarrelInnerGap11_rmin + KLMBarrelInnerGapThickness"/>
+    <constant name="KLMBarrelInnerScintillator11_rmin"		value="KLMBarrelInnerAluminumCase11_rmin + KLMBarrelAluminumCaseThickness"/>
+    <constant name="KLMBarrelOuterScintillator11_rmin"		value="KLMBarrelInnerScintillator11_rmin + KLMBarrelScintillatorThickness"/>
+    <constant name="KLMBarrelOuterAluminumCase11_rmin"		value="KLMBarrelOuterScintillator11_rmin + KLMBarrelScintillatorThickness"/>
+    <constant name="KLMBarrelOuterGap11_rmin"			value="KLMBarrelOuterAluminumCase11_rmin + KLMBarrelAluminumCaseThickness"/>
+    <constant name="KLMBarrelSuperLayer11Thickness"		value="KLMBarrelSecondSuperLayerThickness"/>
+
+
+    <constant name="KLML12_rmin"				value="KLML11_rmin + KLMBarrelSecondSuperLayerThickness"/>
+    <constant name="KLMBarrelSteelLayer12_rmin"			value="KLML12_rmin"/>
+
+    <constant name="KLMBarrelInnerGap12_rmin"			value="KLML12_rmin + KLMBarrelSteelLayerThickness"/>
+    <constant name="KLMBarrelInnerAluminumCase12_rmin"		value="KLMBarrelInnerGap12_rmin + KLMBarrelInnerGapThickness"/>
+    <constant name="KLMBarrelInnerScintillator12_rmin"		value="KLMBarrelInnerAluminumCase12_rmin + KLMBarrelAluminumCaseThickness"/>
+    <constant name="KLMBarrelOuterScintillator12_rmin"		value="KLMBarrelInnerScintillator12_rmin + KLMBarrelScintillatorThickness"/>
+    <constant name="KLMBarrelOuterAluminumCase12_rmin"		value="KLMBarrelOuterScintillator12_rmin + KLMBarrelScintillatorThickness"/>
+    <constant name="KLMBarrelOuterGap12_rmin"			value="KLMBarrelOuterAluminumCase12_rmin + KLMBarrelAluminumCaseThickness"/>
+    <constant name="KLMBarrelSuperLayer12Thickness"		value="KLMBarrelSecondSuperLayerThickness"/>
+
+
+    <constant name="KLML13_rmin"				value="KLML12_rmin + KLMBarrelSecondSuperLayerThickness"/>
+    <constant name="KLMBarrelSteelLayer13_rmin"			value="KLML13_rmin"/>
+
+    <constant name="KLMBarrelInnerGap13_rmin"			value="KLML13_rmin + KLMBarrelSteelLayerThickness"/>
+    <constant name="KLMBarrelInnerAluminumCase13_rmin"		value="KLMBarrelInnerGap13_rmin + KLMBarrelInnerGapThickness"/>
+    <constant name="KLMBarrelInnerScintillator13_rmin"		value="KLMBarrelInnerAluminumCase13_rmin + KLMBarrelAluminumCaseThickness"/>
+    <constant name="KLMBarrelOuterScintillator13_rmin"		value="KLMBarrelInnerScintillator13_rmin + KLMBarrelScintillatorThickness"/>
+    <constant name="KLMBarrelOuterAluminumCase13_rmin"		value="KLMBarrelOuterScintillator13_rmin + KLMBarrelScintillatorThickness"/>
+    <constant name="KLMBarrelOuterGap13_rmin"			value="KLMBarrelOuterAluminumCase13_rmin + KLMBarrelAluminumCaseThickness"/>
+    <constant name="KLMBarrelSuperLayer13Thickness"		value="KLMBarrelSecondSuperLayerThickness"/>
+
+
+    <constant name="KLML14_rmin"				value="KLML13_rmin + KLMBarrelSecondSuperLayerThickness"/>
+    <constant name="KLMBarrelSteelLayer14_rmin"			value="KLML14_rmin"/>
+
+    <constant name="KLMBarrelInnerGap14_rmin"			value="KLML14_rmin + KLMBarrelSteelLayerThickness"/>
+    <constant name="KLMBarrelInnerAluminumCase14_rmin"		value="KLMBarrelInnerGap14_rmin + KLMBarrelInnerGapThickness"/>
+    <constant name="KLMBarrelInnerScintillator14_rmin"		value="KLMBarrelInnerAluminumCase14_rmin + KLMBarrelAluminumCaseThickness"/>
+    <constant name="KLMBarrelOuterScintillator14_rmin"		value="KLMBarrelInnerScintillator14_rmin + KLMBarrelScintillatorThickness"/>
+    <constant name="KLMBarrelOuterAluminumCase14_rmin"		value="KLMBarrelOuterScintillator14_rmin + KLMBarrelScintillatorThickness"/>
+    <constant name="KLMBarrelOuterGap14_rmin"			value="KLMBarrelOuterAluminumCase14_rmin + KLMBarrelAluminumCaseThickness"/>
+    <constant name="KLMBarrelSuperLayer14Thickness"		value="KLMBarrelSecondSuperLayerThickness"/>
+
+
+
+
+
+    <comment>Solenoid Barrel Parameters</comment>
+    <constant name="SolenoidBarrelInnerVacuumVesselThickness"   value=" 20.0 * mm"/>
+    <constant name="SolenoidBarrelInnerSecondMLILayerThickness" value=" 20.0 * mm"/>
+    <constant name="SolenoidBarrelInnerThermalShieldThickness"  value=" 10.0 * mm"/>
+    <constant name="SolenoidBarrelInnerFirstMLILayerThickness"  value=" 10.0 * mm"/>
+    <constant name="SolenoidBarrelInnerHeliumVesselThickness"   value=" 10.0 * mm"/>
+    <constant name="SolenoidBarrelInnerHeliumThickness"         value=" 15.0 * mm"/>
+    <constant name="SolenoidBarrelCoilFormerThickness"          value=" 10.0 * mm"/>
+    <constant name="SolenoidBarrelCoilThickness"                value="100.0 * mm"/>
+    <constant name="SolenoidBarrelCoilOverbindThickness"        value=" 40.0 * mm"/>
+    <constant name="SolenoidBarrelOuterHeliumThickness"         value=" 15.0 * mm"/>
+    <constant name="SolenoidBarrelOuterHeliumVesselThickness"   value=" 10.0 * mm"/>
+    <constant name="SolenoidBarrelOuterFirstMLILayerThickness"  value=" 10.0 * mm"/>
+    <constant name="SolenoidBarrelOuterThermalShieldThickness"  value=" 10.0 * mm"/>
+    <constant name="SolenoidBarrelOuterSecondMLILayerThickness" value=" 20.0 * mm"/>
+    <constant name="SolenoidBarrelOuterVacuumVesselThickness"   value=" 20.0 * mm"/>
+
+    <comment>Solenoid Endcap Parameters</comment>
+    <constant name="SolenoidEndcapCoilEndSupportThickness"  value="20.0 * mm"/>
+    <constant name="SolenoidEndcapHeliumThickness"          value="15.0 * mm"/>
+    <constant name="SolenoidEndcapHeliumVesselThickness"    value="10.0 * mm"/>
+    <constant name="SolenoidEndcapFirstMLILayerThickness"   value="10.0 * mm"/>
+    <constant name="SolenoidEndcapThermalShieldThickness"   value="10.0 * mm"/>
+    <constant name="SolenoidEndcapSecondMLILayerThickness"  value="20.0 * mm"/>
+    <constant name="SolenoidEndcapVacuumVesselThickness"    value="20.0 * mm"/>
+
+    <comment>Barrel layer zmax extends to the endcap layer zmin</comment>
+    
+
+    <!--
+    <constant name="SolenoidBarrelInnerVacuumVessel_zmax"   value="SolenoidBarrel_length/2.0 - SolenoidEndcapVacuumVesselThickness"/>
+    -->
+
+    
+    <constant name="SolenoidBarrelInnerVacuumVessel_zmax"   value="KLMBarrel_length/2.0 - SolenoidEndcapVacuumVesselThickness"/>
+
+
+    <constant name="SolenoidBarrelInnerSecondMLILayer_zmax" value="SolenoidBarrelInnerVacuumVessel_zmax - SolenoidEndcapSecondMLILayerThickness"/>
+    <constant name="SolenoidBarrelInnerThermalShield_zmax"  value="SolenoidBarrelInnerSecondMLILayer_zmax - SolenoidEndcapThermalShieldThickness"/>
+    <constant name="SolenoidBarrelInnerFirstMLILayer_zmax"  value="SolenoidBarrelInnerThermalShield_zmax - SolenoidEndcapFirstMLILayerThickness"/>
+    <constant name="SolenoidBarrelInnerHeliumVessel_zmax"   value="SolenoidBarrelInnerFirstMLILayer_zmax - SolenoidEndcapHeliumVesselThickness"/>
+    <constant name="SolenoidBarrelInnerHelium_zmax"         value="SolenoidBarrelInnerHeliumVessel_zmax - SolenoidEndcapHeliumThickness"/>
+    <constant name="SolenoidBarrelCoil_zmax"                value="SolenoidBarrelInnerHelium_zmax - SolenoidEndcapCoilEndSupportThickness"/>
+    <constant name="SolenoidBarrelCoilFormer_zmax"          value="SolenoidBarrelCoil_zmax"/>
+    <constant name="SolenoidBarrelCoilOverbind_zmax"        value="SolenoidBarrelCoil_zmax"/>
+    <constant name="SolenoidBarrelOuterHelium_zmax"         value="SolenoidBarrelInnerHelium_zmax"/>
+    <constant name="SolenoidBarrelOuterHeliumVessel_zmax"   value="SolenoidBarrelInnerHeliumVessel_zmax"/>
+    <constant name="SolenoidBarrelOuterFirstMLILayer_zmax"  value="SolenoidBarrelInnerFirstMLILayer_zmax"/>
+    <constant name="SolenoidBarrelOuterThermalShield_zmax"  value="SolenoidBarrelInnerThermalShield_zmax"/>
+    <constant name="SolenoidBarrelOuterSecondMLILayer_zmax" value="SolenoidBarrelInnerSecondMLILayer_zmax"/>
+    <constant name="SolenoidBarrelOuterVacuumVessel_zmax"   value="SolenoidBarrelInnerVacuumVessel_zmax"/>
+
+    <constant name="SolenoidEndcapCoilEndSupport_zmin"      value="SolenoidBarrelCoil_zmax"/>
+    <constant name="SolenoidEndcapHelium_zmin"              value="SolenoidBarrelInnerHelium_zmax"/>
+    <constant name="SolenoidEndcapHeliumVessel_zmin"        value="SolenoidBarrelInnerHeliumVessel_zmax"/>
+    <constant name="SolenoidEndcapFirstMLILayer_zmin"       value="SolenoidBarrelInnerFirstMLILayer_zmax"/>
+    <constant name="SolenoidEndcapThermalShield_zmin"       value="SolenoidBarrelInnerThermalShield_zmax"/>
+    <constant name="SolenoidEndcapSecondMLILayer_zmin"      value="SolenoidBarrelInnerSecondMLILayer_zmax"/>
+    <constant name="SolenoidEndcapVacuumVessel_zmin"        value="SolenoidBarrelInnerVacuumVessel_zmax"/>
+    
+
+    <!--
+    <constant name="SolenoidBarrelInnerVacuumVessel_rmin"   value="SolenoidBarrel_rmin"/>
+    --> 
+    <constant name="SolenoidBarrelInnerVacuumVessel_rmin"   value="KLMBarrel_rmin"/>
+    <!--
+    <constant name="SolenoidBarrelInnerVacuumVessel_rmin"   value="200 * cm"/>
+    -->
+    
+    <constant name="SolenoidBarrelInnerVacuumVessel_rmax"   value="SolenoidBarrelInnerVacuumVessel_rmin + SolenoidBarrelInnerVacuumVesselThickness"/>
+    <constant name="SolenoidBarrelInnerSecondMLILayer_rmin" value="SolenoidBarrelInnerVacuumVessel_rmax"/>
+    <constant name="SolenoidBarrelInnerSecondMLILayer_rmax" value="SolenoidBarrelInnerSecondMLILayer_rmin + SolenoidBarrelInnerSecondMLILayerThickness"/>
+    <constant name="SolenoidBarrelInnerThermalShield_rmin"  value="SolenoidBarrelInnerSecondMLILayer_rmax"/>
+    <constant name="SolenoidBarrelInnerThermalShield_rmax"  value="SolenoidBarrelInnerThermalShield_rmin + SolenoidBarrelInnerThermalShieldThickness"/>
+    <constant name="SolenoidBarrelInnerFirstMLILayer_rmin"  value="SolenoidBarrelInnerThermalShield_rmax"/>
+    <constant name="SolenoidBarrelInnerFirstMLILayer_rmax"  value="SolenoidBarrelInnerFirstMLILayer_rmin + SolenoidBarrelInnerFirstMLILayerThickness"/>
+    <constant name="SolenoidBarrelInnerHeliumVessel_rmin"   value="SolenoidBarrelInnerFirstMLILayer_rmax"/>
+    <constant name="SolenoidBarrelInnerHeliumVessel_rmax"   value="SolenoidBarrelInnerHeliumVessel_rmin + SolenoidBarrelInnerHeliumVesselThickness"/>
+    <constant name="SolenoidBarrelInnerHelium_rmin"         value="SolenoidBarrelInnerHeliumVessel_rmax"/>
+    <constant name="SolenoidBarrelInnerHelium_rmax"         value="SolenoidBarrelInnerHelium_rmin + SolenoidBarrelInnerHeliumThickness"/>
+    <constant name="SolenoidBarrelCoilFormer_rmin"          value="SolenoidBarrelInnerHelium_rmax"/>
+    <constant name="SolenoidBarrelCoilFormer_rmax"          value="SolenoidBarrelCoilFormer_rmin + SolenoidBarrelCoilFormerThickness"/>
+    <constant name="SolenoidBarrelCoil_rmin"                value="SolenoidBarrelCoilFormer_rmax"/>
+    <constant name="SolenoidBarrelCoil_rmax"                value="SolenoidBarrelCoil_rmin + SolenoidBarrelCoilThickness"/>
+    <constant name="SolenoidBarrelCoilOverbind_rmin"        value="SolenoidBarrelCoil_rmax"/>
+    <constant name="SolenoidBarrelCoilOverbind_rmax"        value="SolenoidBarrelCoilOverbind_rmin + SolenoidBarrelCoilOverbindThickness"/>
+    <constant name="SolenoidBarrelOuterHelium_rmin"         value="SolenoidBarrelCoilOverbind_rmax"/>
+    <constant name="SolenoidBarrelOuterHelium_rmax"         value="SolenoidBarrelOuterHelium_rmin + SolenoidBarrelOuterHeliumThickness"/>
+    <constant name="SolenoidBarrelOuterHeliumVessel_rmin"   value="SolenoidBarrelOuterHelium_rmax"/>
+    <constant name="SolenoidBarrelOuterHeliumVessel_rmax"   value="SolenoidBarrelOuterHeliumVessel_rmin + SolenoidBarrelOuterHeliumVesselThickness"/>
+    <constant name="SolenoidBarrelOuterFirstMLILayer_rmin"  value="SolenoidBarrelOuterHeliumVessel_rmax"/>
+    <constant name="SolenoidBarrelOuterFirstMLILayer_rmax"  value="SolenoidBarrelOuterFirstMLILayer_rmin + SolenoidBarrelOuterFirstMLILayerThickness"/>
+    <constant name="SolenoidBarrelOuterThermalShield_rmin"  value="SolenoidBarrelOuterFirstMLILayer_rmax"/>
+    <constant name="SolenoidBarrelOuterThermalShield_rmax"  value="SolenoidBarrelOuterThermalShield_rmin + SolenoidBarrelOuterThermalShieldThickness"/>
+    <constant name="SolenoidBarrelOuterSecondMLILayer_rmin" value="SolenoidBarrelOuterThermalShield_rmax"/>
+    <constant name="SolenoidBarrelOuterSecondMLILayer_rmax" value="SolenoidBarrelOuterSecondMLILayer_rmin + SolenoidBarrelOuterSecondMLILayerThickness"/>
+    <constant name="SolenoidBarrelOuterVacuumVessel_rmin"   value="SolenoidBarrelOuterSecondMLILayer_rmax"/>
+    <constant name="SolenoidBarrelOuterVacuumVessel_rmax"   value="SolenoidBarrelOuterVacuumVessel_rmin + SolenoidBarrelOuterVacuumVesselThickness"/>
+
+    <constant name="SolenoidalFieldRadius"
+              value="(SolenoidBarrelCoil_rmin + SolenoidBarrelCoil_rmax) / 2.0"/>
+      
+    <!--
+    <comment> Solenoid Endcap </comment>
+    <comment>At the center, the end caps are outside the barrels</comment>
+    <constant name="SolenoidEndcapCoilEndSupport_rmin" value="SolenoidBarrelCoilFormer_rmin"/>
+    <constant name="SolenoidEndcapCoilEndSupport_rmax" value="SolenoidBarrelCoilOverbind_rmax"/>
+    <constant name="SolenoidEndcapHelium_rmin"         value="SolenoidBarrelInnerHelium_rmin"/>
+    <constant name="SolenoidEndcapHelium_rmax"         value="SolenoidBarrelOuterHelium_rmax"/>
+    <constant name="SolenoidEndcapHeliumVessel_rmin"   value="SolenoidBarrelInnerHeliumVessel_rmin"/>
+    <constant name="SolenoidEndcapHeliumVessel_rmax"   value="SolenoidBarrelOuterHeliumVessel_rmax"/>
+    <constant name="SolenoidEndcapFirstMLILayer_rmin"  value="SolenoidBarrelInnerFirstMLILayer_rmin"/>
+    <constant name="SolenoidEndcapFirstMLILayer_rmax"  value="SolenoidBarrelOuterFirstMLILayer_rmax"/>
+    <constant name="SolenoidEndcapThermalShield_rmin"  value="SolenoidBarrelInnerThermalShield_rmin"/>
+    <constant name="SolenoidEndcapThermalShield_rmax"  value="SolenoidBarrelOuterThermalShield_rmax"/>
+    <constant name="SolenoidEndcapSecondMLILayer_rmin" value="SolenoidBarrelInnerSecondMLILayer_rmin"/>
+    <constant name="SolenoidEndcapSecondMLILayer_rmax" value="SolenoidBarrelOuterSecondMLILayer_rmax"/>
+    <constant name="SolenoidEndcapVacuumVessel_rmin"   value="SolenoidBarrelInnerVacuumVessel_rmin"/>
+    <constant name="SolenoidEndcapVacuumVessel_rmax"   value="SolenoidBarrelOuterVacuumVessel_rmax"/>
+    -->
+
+  </define>
+
+  <detectors>
+    <documentation level="6">
+      ### Solenoid Magnet
+      ---------------
+      The solenoid superconducting magnet and surrounding cryostat and
+      yoke endcaps.
+    </documentation>
+   
+    <!--
+    <detector
+      id="Solenoid_ID"
+      name="SolenoidBarrel"
+      type="epic_Solenoid"
+      insideTrackingVolume="true">
+      <position x="0" y="0" z="KLM_offset"/>
+      <dimensions rmin="KLM_rmin" rmax="KLM_rmax" length="KLM_length"/>
+    -->
+    
+    
+    <detector
+      id="299"
+      name="KLMBarrel"
+      type="epic_KLMLBL"
+      calorimeterType="HAD_BARREL"
+      readout="KLMReadout">
+	    <!-- <sensitive type="Tracker"/> -->
+      <comment> insideTrackingVolume="true"> </comment>
+      <position x="0" y="0" z="KLM_offset"/>
+      <dimensions rmin="KLM_rmin" rmax="KLM_rmax" length="KLM_length"/>
+    
+
+      <!-- test layers -->
+
+      <layer id="1" name="SteelLayer01"
+        inner_r="KLMBarrel_rmin"
+        outer_z="KLM_length/2.0 - 6.0 * cm"
+        vis="KLM_steel_vis">
+        <slice material="Steel235" thickness="KLMBarrelFirstSteelLayerThickness"/>
+      </layer>
+
+      <layer id="7" name="InnerGap01"
+        inner_r="KLMBarrelFirstInnerGap_rmin"
+        outer_z="KLM_length/2.0 - 10.0 * cm"
+        vis="KLM_air_vis">
+        <slice material="Air" thickness="KLMBarrelInnerGapThickness"/>
+      </layer>
+
+      <layer id="2" name="AluminumInnerCase01"
+	inner_r="KLMBarrelFirstInnerAluminumCase_rmin"
+	outer_z="KLM_length/2.0"
+	vis="KLM_aluminum_vis">
+        <slice material="Aluminum5083" thickness="KLMBarrelAluminumCaseThickness"/>
+      </layer>
+      <!--
+      <assembly name="SensitiveInnerScintillator01">
+        <layer id="3" name="InnerScintillator01"
+          inner_r="KLMBarrelFirstInnerScintillator_rmin"
+          outer_z="KLM_length/2.0 + 2.0 * cm"
+          vis="KLM_scintillator_vis">
+          <slice material="PlasticScint" thickness="KLMBarrelScintillatorThickness"/>
+        </layer>
+        <type>calorimeter</type>
+	<readout>
+          <id>photons</id>
+	  <type>position:R/L:depositedEnergy</type>
+        </readout>
+      </assembly>
+      -->
+      <layer id="3" name="InnerScintillator01"
+        inner_r="KLMBarrelFirstInnerScintillator_rmin"
+        outer_z="KLM_length/2.0 + 2.0 * cm"
+        vis="KLM_scintillator_vis">
+        <slice material="PlasticScint" thickness="KLMBarrelScintillatorThickness" sensitive="true"/>
+      </layer>
+
+      <layer id="4" name="OuterScintillator01"
+        inner_r="KLMBarrelFirstOuterScintillator_rmin"
+        outer_z="KLM_length/2.0 + 3.0 * cm"
+        vis="KLM_scintillator_vis">
+        <slice material="PlasticScint" thickness="KLMBarrelScintillatorThickness" sensitive="true"/>
+      </layer>
+
+      <layer id="5" name="AluminumOuterCase01"
+	inner_r="KLMBarrelFirstOuterAluminumCase_rmin"
+	outer_z="KLM_length/2.0"
+	vis="KLM_aluminum_vis">
+      <slice material="Aluminum5083" thickness="KLMBarrelAluminumCaseThickness"/>
+      </layer>
+
+      <layer id="6" name="OuterGap01"
+	inner_r="KLMBarrelFirstOuterGap_rmin"
+	outer_z="KLM_length/2.0 - 10.0 * cm"
+	vis="KLM_air_vis">
+      <slice material="Air" thickness="KLMBarrelGapThickness"/>
+      </layer>
+
+      <layer id="11" name="SteelLayer02"
+        inner_r="KLMBarrelSecondSteelLayer_rmin"
+        outer_z="KLM_length/2.0 - 6.0 * cm"
+        vis="KLM_steel_vis">
+        <slice material="Steel235" thickness="KLMBarrelFirstSteelLayerThickness"/>
+      </layer>
+
+      <layer id="17" name="InnerGap02"
+        inner_r="KLMBarrelSecondInnerGap_rmin"
+        outer_z="KLM_length/2.0 - 10.0 * cm"
+        vis="KLM_air_vis">
+        <slice material="Air" thickness="KLMBarrelInnerGapThickness"/>
+      </layer>
+
+      <layer id="12" name="AluminumInnerCase02"
+	inner_r="KLMBarrelSecondInnerAluminumCase_rmin"
+	outer_z="KLM_length/2.0"
+	vis="KLM_aluminum_vis">
+      <slice material="Aluminum5083" thickness="KLMBarrelAluminumCaseThickness"/>
+      </layer>
+
+      <layer id="13" name="InnerScintillator02"
+        inner_r="KLMBarrelSecondInnerScintillator_rmin"
+        outer_z="KLM_length/2.0 + 2.0 * cm"
+        vis="KLM_scintillator_vis">
+        <slice material="PlasticScint" thickness="KLMBarrelScintillatorThickness" sensitive="true"/>
+      </layer>
+
+      <layer id="14" name="OuterScintillator02"
+        inner_r="KLMBarrelSecondOuterScintillator_rmin"
+        outer_z="KLM_length/2.0 + 3.0 * cm"
+        vis="KLM_scintillator_vis">
+        <slice material="PlasticScint" thickness="KLMBarrelScintillatorThickness" sensitive="true"/>
+      </layer>
+
+      <layer id="15" name="AluminumOuterCase02"
+	inner_r="KLMBarrelSecondOuterAluminumCase_rmin"
+	outer_z="KLM_length/2.0"
+	vis="KLM_aluminum_vis">
+      <slice material="Aluminum5083" thickness="KLMBarrelAluminumCaseThickness"/>
+      </layer>
+
+      <layer id="16" name="OuterGap02"
+        inner_r="KLMBarrelSecondOuterGap_rmin"
+        outer_z="KLM_length/2.0 - 10.0 * cm"
+        vis="KLM_air_vis">
+      <slice material="Air" thickness="KLMBarrelGapThickness"/>
+      </layer>
+
+      <layer id="21" name="SteelLayer03"
+        inner_r="KLMBarrelSteelLayer03_rmin"
+        outer_z="KLM_length/2.0 - 6.0 * cm"
+        vis="KLM_steel_vis">
+        <slice material="Steel235" thickness="KLMBarrelFirstSteelLayerThickness"/>
+      </layer>
+
+      <layer id="27" name="InnerGap03"
+        inner_r="KLMBarrelInnerGap03_rmin"
+        outer_z="KLM_length/2.0 - 10.0 * cm"
+        vis="KLM_air_vis">
+        <slice material="Air" thickness="KLMBarrelInnerGapThickness"/>
+      </layer>
+
+      <layer id="22" name="AluminumInnerCase03"
+	inner_r="KLMBarrelInnerAluminumCase03_rmin"
+	outer_z="KLM_length/2.0"
+	vis="KLM_aluminum_vis">
+      <slice material="Aluminum5083" thickness="KLMBarrelAluminumCaseThickness"/>
+      </layer>
+
+      <layer id="23" name="InnerScintillator03"
+        inner_r="KLMBarrelInnerScintillator03_rmin"
+        outer_z="KLM_length/2.0 + 2.0 * cm"
+        vis="KLM_scintillator_vis">
+        <slice material="PlasticScint" thickness="KLMBarrelScintillatorThickness" sensitive="true"/>
+      </layer>
+
+      <layer id="24" name="OuterScintillator03"
+        inner_r="KLMBarrelOuterScintillator03_rmin"
+        outer_z="KLM_length/2.0 + 3.0 * cm"
+        vis="KLM_scintillator_vis">
+        <slice material="PlasticScint" thickness="KLMBarrelScintillatorThickness" sensitive="true"/>
+      </layer>
+
+      <layer id="25" name="AluminumOuterCase03"
+	inner_r="KLMBarrelOuterAluminumCase03_rmin"
+	outer_z="KLM_length/2.0"
+	vis="KLM_aluminum_vis">
+      <slice material="Aluminum5083" thickness="KLMBarrelAluminumCaseThickness"/>
+      </layer>
+
+      <layer id="26" name="OuterGap03"
+        inner_r="KLMBarrelOuterGap03_rmin"
+        outer_z="KLM_length/2.0 - 10.0 * cm"
+        vis="KLM_air_vis">
+      <slice material="Air" thickness="KLMBarrelGapThickness"/>
+      </layer>
+
+
+      <layer id="31" name="SteelLayer04"
+        inner_r="KLMBarrelSteelLayer04_rmin"
+        outer_z="KLM_length/2.0 - 6.0 * cm"
+        vis="KLM_steel_vis">
+        <slice material="Steel235" thickness="KLMBarrelFirstSteelLayerThickness"/>
+      </layer>
+
+      <layer id="37" name="InnerGap04"
+        inner_r="KLMBarrelInnerGap04_rmin"
+        outer_z="KLM_length/2.0 - 10.0 * cm"
+        vis="KLM_air_vis">
+        <slice material="Air" thickness="KLMBarrelInnerGapThickness"/>
+      </layer>
+
+      <layer id="32" name="AluminumInnerCase04"
+	inner_r="KLMBarrelInnerAluminumCase04_rmin"
+	outer_z="KLM_length/2.0"
+	vis="KLM_aluminum_vis">
+      <slice material="Aluminum5083" thickness="KLMBarrelAluminumCaseThickness"/>
+      </layer>
+
+      <layer id="33" name="InnerScintillator04"
+        inner_r="KLMBarrelInnerScintillator04_rmin"
+        outer_z="KLM_length/2.0 + 2.0 * cm"
+        vis="KLM_scintillator_vis">
+        <slice material="PlasticScint" thickness="KLMBarrelScintillatorThickness" sensitive="true"/>
+      </layer>
+
+      <layer id="34" name="OuterScintillator04"
+        inner_r="KLMBarrelOuterScintillator04_rmin"
+        outer_z="KLM_length/2.0 + 3.0 * cm"
+        vis="KLM_scintillator_vis">
+        <slice material="PlasticScint" thickness="KLMBarrelScintillatorThickness" sensitive="true"/>
+      </layer>
+
+      <layer id="35" name="AluminumOuterCase04"
+	inner_r="KLMBarrelOuterAluminumCase04_rmin"
+	outer_z="KLM_length/2.0"
+	vis="KLM_aluminum_vis">
+      <slice material="Aluminum5083" thickness="KLMBarrelAluminumCaseThickness"/>
+      </layer>
+
+      <layer id="36" name="OuterGap04"
+        inner_r="KLMBarrelOuterGap04_rmin"
+        outer_z="KLM_length/2.0 - 10.0 * cm"
+        vis="KLM_air_vis">
+      <slice material="Air" thickness="KLMBarrelGapThickness"/>
+      </layer>
+
+
+      <layer id="41" name="SteelLayer05"
+        inner_r="KLMBarrelSteelLayer05_rmin"
+        outer_z="KLM_length/2.0 - 6.0 * cm"
+        vis="KLM_steel_vis">
+        <slice material="Steel235" thickness="KLMBarrelFirstSteelLayerThickness"/>
+      </layer>
+
+      <layer id="47" name="InnerGap05"
+        inner_r="KLMBarrelInnerGap05_rmin"
+        outer_z="KLM_length/2.0 - 10.0 * cm"
+        vis="KLM_air_vis">
+        <slice material="Air" thickness="KLMBarrelInnerGapThickness"/>
+      </layer>
+
+      <layer id="42" name="AluminumInnerCase05"
+	inner_r="KLMBarrelInnerAluminumCase05_rmin"
+	outer_z="KLM_length/2.0"
+	vis="KLM_aluminum_vis">
+      <slice material="Aluminum5083" thickness="KLMBarrelAluminumCaseThickness"/>
+      </layer>
+
+      <layer id="43" name="InnerScintillator05"
+        inner_r="KLMBarrelInnerScintillator05_rmin"
+        outer_z="KLM_length/2.0 + 2.0 * cm"
+        vis="KLM_scintillator_vis">
+        <slice material="PlasticScint" thickness="KLMBarrelScintillatorThickness" sensitive="true"/>
+      </layer>
+
+      <layer id="44" name="OuterScintillator05"
+        inner_r="KLMBarrelOuterScintillator05_rmin"
+        outer_z="KLM_length/2.0 + 3.0 * cm"
+        vis="KLM_scintillator_vis">
+        <slice material="PlasticScint" thickness="KLMBarrelScintillatorThickness" sensitive="true"/>
+      </layer>
+
+      <layer id="45" name="AluminumOuterCase05"
+	inner_r="KLMBarrelOuterAluminumCase05_rmin"
+	outer_z="KLM_length/2.0"
+	vis="KLM_aluminum_vis">
+      <slice material="Aluminum5083" thickness="KLMBarrelAluminumCaseThickness"/>
+      </layer>
+
+      <layer id="46" name="OuterGap05"
+        inner_r="KLMBarrelOuterGap05_rmin"
+        outer_z="KLM_length/2.0 - 10.0 * cm"
+        vis="KLM_air_vis">
+      <slice material="Air" thickness="KLMBarrelGapThickness"/>
+      </layer>
+
+
+      <layer id="51" name="SteelLayer06"
+        inner_r="KLMBarrelSteelLayer06_rmin"
+        outer_z="KLM_length/2.0 - 6.0 * cm"
+        vis="KLM_steel_vis">
+        <slice material="Steel235" thickness="KLMBarrelFirstSteelLayerThickness"/>
+      </layer>
+
+      <layer id="57" name="InnerGap06"
+        inner_r="KLMBarrelInnerGap06_rmin"
+        outer_z="KLM_length/2.0 - 10.0 * cm"
+        vis="KLM_air_vis">
+        <slice material="Air" thickness="KLMBarrelInnerGapThickness"/>
+      </layer>
+
+      <layer id="52" name="AluminumInnerCase06"
+	inner_r="KLMBarrelInnerAluminumCase06_rmin"
+	outer_z="KLM_length/2.0"
+	vis="KLM_aluminum_vis">
+      <slice material="Aluminum5083" thickness="KLMBarrelAluminumCaseThickness"/>
+      </layer>
+
+      <layer id="53" name="InnerScintillator06"
+        inner_r="KLMBarrelInnerScintillator06_rmin"
+        outer_z="KLM_length/2.0 + 2.0 * cm"
+        vis="KLM_scintillator_vis">
+        <slice material="PlasticScint" thickness="KLMBarrelScintillatorThickness" sensitive="true"/>
+      </layer>
+
+      <layer id="54" name="OuterScintillator06"
+        inner_r="KLMBarrelOuterScintillator06_rmin"
+        outer_z="KLM_length/2.0 + 3.0 * cm"
+        vis="KLM_scintillator_vis">
+        <slice material="PlasticScint" thickness="KLMBarrelScintillatorThickness" sensitive="true"/>
+      </layer>
+
+      <layer id="55" name="AluminumOuterCase06"
+	inner_r="KLMBarrelOuterAluminumCase06_rmin"
+	outer_z="KLM_length/2.0"
+	vis="KLM_aluminum_vis">
+      <slice material="Aluminum5083" thickness="KLMBarrelAluminumCaseThickness"/>
+      </layer>
+
+      <layer id="56" name="OuterGap06"
+        inner_r="KLMBarrelOuterGap06_rmin"
+        outer_z="KLM_length/2.0 - 10.0 * cm"
+        vis="KLM_air_vis">
+      <slice material="Air" thickness="KLMBarrelGapThickness"/>
+      </layer>
+
+
+      <layer id="61" name="SteelLayer07"
+        inner_r="KLMBarrelSteelLayer07_rmin"
+        outer_z="KLM_length/2.0 - 6.0 * cm"
+        vis="KLM_steel_vis">
+        <slice material="Steel235" thickness="KLMBarrelFirstSteelLayerThickness"/>
+      </layer>
+
+      <layer id="67" name="InnerGap07"
+        inner_r="KLMBarrelInnerGap07_rmin"
+        outer_z="KLM_length/2.0 - 10.0 * cm"
+        vis="KLM_air_vis">
+        <slice material="Air" thickness="KLMBarrelInnerGapThickness"/>
+      </layer>
+
+      <layer id="62" name="AluminumInnerCase07"
+	inner_r="KLMBarrelInnerAluminumCase07_rmin"
+	outer_z="KLM_length/2.0"
+	vis="KLM_aluminum_vis">
+      <slice material="Aluminum5083" thickness="KLMBarrelAluminumCaseThickness"/>
+      </layer>
+
+      <layer id="63" name="InnerScintillator07"
+        inner_r="KLMBarrelInnerScintillator07_rmin"
+        outer_z="KLM_length/2.0 + 2.0 * cm"
+        vis="KLM_scintillator_vis">
+        <slice material="PlasticScint" thickness="KLMBarrelScintillatorThickness" sensitive="true"/>
+      </layer>
+
+      <layer id="64" name="OuterScintillator07"
+        inner_r="KLMBarrelOuterScintillator07_rmin"
+        outer_z="KLM_length/2.0 + 3.0 * cm"
+        vis="KLM_scintillator_vis">
+        <slice material="PlasticScint" thickness="KLMBarrelScintillatorThickness" sensitive="true"/>
+      </layer>
+
+      <layer id="65" name="AluminumOuterCase07"
+	inner_r="KLMBarrelOuterAluminumCase07_rmin"
+	outer_z="KLM_length/2.0"
+	vis="KLM_aluminum_vis">
+      <slice material="Aluminum5083" thickness="KLMBarrelAluminumCaseThickness"/>
+      </layer>
+
+      <layer id="66" name="OuterGap07"
+        inner_r="KLMBarrelOuterGap07_rmin"
+        outer_z="KLM_length/2.0 - 10.0 * cm"
+        vis="KLM_air_vis">
+      <slice material="Air" thickness="KLMBarrelGapThickness"/>
+      </layer>
+
+
+      <layer id="71" name="SteelLayer08"
+        inner_r="KLMBarrelSteelLayer08_rmin"
+        outer_z="KLM_length/2.0 - 6.0 * cm"
+        vis="KLM_steel_vis">
+        <slice material="Steel235" thickness="KLMBarrelFirstSteelLayerThickness"/>
+      </layer>
+
+      <layer id="77" name="InnerGap08"
+        inner_r="KLMBarrelInnerGap08_rmin"
+        outer_z="KLM_length/2.0 - 10.0 * cm"
+        vis="KLM_air_vis">
+        <slice material="Air" thickness="KLMBarrelInnerGapThickness"/>
+      </layer>
+
+      <layer id="72" name="AluminumInnerCase08"
+	inner_r="KLMBarrelInnerAluminumCase08_rmin"
+	outer_z="KLM_length/2.0"
+	vis="KLM_aluminum_vis">
+      <slice material="Aluminum5083" thickness="KLMBarrelAluminumCaseThickness"/>
+      </layer>
+
+      <layer id="73" name="InnerScintillator08"
+        inner_r="KLMBarrelInnerScintillator08_rmin"
+        outer_z="KLM_length/2.0 + 2.0 * cm"
+        vis="KLM_scintillator_vis">
+        <slice material="PlasticScint" thickness="KLMBarrelScintillatorThickness" sensitive="true"/>
+      </layer>
+
+      <layer id="74" name="OuterScintillator08"
+        inner_r="KLMBarrelOuterScintillator08_rmin"
+        outer_z="KLM_length/2.0 + 3.0 * cm"
+        vis="KLM_scintillator_vis">
+        <slice material="PlasticScint" thickness="KLMBarrelScintillatorThickness" sensitive="true"/>
+      </layer>
+
+      <layer id="75" name="AluminumOuterCase08"
+	inner_r="KLMBarrelOuterAluminumCase08_rmin"
+	outer_z="KLM_length/2.0"
+	vis="KLM_aluminum_vis">
+      <slice material="Aluminum5083" thickness="KLMBarrelAluminumCaseThickness"/>
+      </layer>
+
+      <layer id="76" name="OuterGap08"
+        inner_r="KLMBarrelOuterGap08_rmin"
+        outer_z="KLM_length/2.0 - 10.0 * cm"
+        vis="KLM_air_vis">
+      <slice material="Air" thickness="KLMBarrelGapThickness"/>
+      </layer>
+
+
+      <layer id="81" name="SteelLayer09"
+        inner_r="KLMBarrelSteelLayer09_rmin"
+        outer_z="KLM_length/2.0 - 6.0 * cm"
+        vis="KLM_steel_vis">
+        <slice material="Steel235" thickness="KLMBarrelFirstSteelLayerThickness"/>
+      </layer>
+
+      <layer id="87" name="InnerGap09"
+        inner_r="KLMBarrelInnerGap09_rmin"
+        outer_z="KLM_length/2.0 - 10.0 * cm"
+        vis="KLM_air_vis">
+        <slice material="Air" thickness="KLMBarrelInnerGapThickness"/>
+      </layer>
+
+      <layer id="82" name="AluminumInnerCase09"
+	inner_r="KLMBarrelInnerAluminumCase09_rmin"
+	outer_z="KLM_length/2.0"
+	vis="KLM_aluminum_vis">
+      <slice material="Aluminum5083" thickness="KLMBarrelAluminumCaseThickness"/>
+      </layer>
+
+      <layer id="83" name="InnerScintillator09"
+        inner_r="KLMBarrelInnerScintillator09_rmin"
+        outer_z="KLM_length/2.0 + 2.0 * cm"
+        vis="KLM_scintillator_vis">
+        <slice material="PlasticScint" thickness="KLMBarrelScintillatorThickness" sensitive="true"/>
+      </layer>
+
+      <layer id="84" name="OuterScintillator09"
+        inner_r="KLMBarrelOuterScintillator09_rmin"
+        outer_z="KLM_length/2.0 + 3.0 * cm"
+        vis="KLM_scintillator_vis">
+        <slice material="PlasticScint" thickness="KLMBarrelScintillatorThickness" sensitive="true"/>
+      </layer>
+
+      <layer id="85" name="AluminumOuterCase09"
+	inner_r="KLMBarrelOuterAluminumCase09_rmin"
+	outer_z="KLM_length/2.0"
+	vis="KLM_aluminum_vis">
+      <slice material="Aluminum5083" thickness="KLMBarrelAluminumCaseThickness"/>
+      </layer>
+
+      <layer id="86" name="OuterGap09"
+        inner_r="KLMBarrelOuterGap09_rmin"
+        outer_z="KLM_length/2.0 - 10.0 * cm"
+        vis="KLM_air_vis">
+      <slice material="Air" thickness="KLMBarrelGapThickness"/>
+      </layer>
+
+
+      <layer id="91" name="SteelLayer10"
+        inner_r="KLMBarrelSteelLayer10_rmin"
+        outer_z="KLM_length/2.0 - 6.0 * cm"
+        vis="KLM_steel_vis">
+        <slice material="Steel235" thickness="KLMBarrelFirstSteelLayerThickness"/>
+      </layer>
+
+      <layer id="97" name="InnerGap10"
+        inner_r="KLMBarrelInnerGap10_rmin"
+        outer_z="KLM_length/2.0 - 10.0 * cm"
+        vis="KLM_air_vis">
+        <slice material="Air" thickness="KLMBarrelInnerGapThickness"/>
+      </layer>
+
+      <layer id="92" name="AluminumInnerCase10"
+	inner_r="KLMBarrelInnerAluminumCase10_rmin"
+	outer_z="KLM_length/2.0"
+	vis="KLM_aluminum_vis">
+      <slice material="Aluminum5083" thickness="KLMBarrelAluminumCaseThickness"/>
+      </layer>
+
+      <layer id="93" name="InnerScintillator10"
+        inner_r="KLMBarrelInnerScintillator10_rmin"
+        outer_z="KLM_length/2.0 + 2.0 * cm"
+        vis="KLM_scintillator_vis">
+        <slice material="PlasticScint" thickness="KLMBarrelScintillatorThickness" sensitive="true"/>
+      </layer>
+
+      <layer id="94" name="OuterScintillator10"
+        inner_r="KLMBarrelOuterScintillator10_rmin"
+        outer_z="KLM_length/2.0 + 3.0 * cm"
+        vis="KLM_scintillator_vis">
+        <slice material="PlasticScint" thickness="KLMBarrelScintillatorThickness" sensitive="true"/>
+      </layer>
+
+      <layer id="95" name="AluminumOuterCase10"
+	inner_r="KLMBarrelOuterAluminumCase10_rmin"
+	outer_z="KLM_length/2.0"
+	vis="KLM_aluminum_vis">
+      <slice material="Aluminum5083" thickness="KLMBarrelAluminumCaseThickness"/>
+      </layer>
+
+      <layer id="96" name="OuterGap10"
+        inner_r="KLMBarrelOuterGap10_rmin"
+        outer_z="KLM_length/2.0 - 10.0 * cm"
+        vis="KLM_air_vis">
+      <slice material="Air" thickness="KLMBarrelGapThickness"/>
+      </layer>
+
+
+      <layer id="101" name="SteelLayer11"
+        inner_r="KLMBarrelSteelLayer11_rmin"
+        outer_z="KLM_length/2.0 - 6.0 * cm"
+        vis="KLM_steel_vis">
+        <slice material="Steel235" thickness="KLMBarrelFirstSteelLayerThickness"/>
+      </layer>
+
+      <layer id="107" name="InnerGap11"
+        inner_r="KLMBarrelInnerGap11_rmin"
+        outer_z="KLM_length/2.0 - 10.0 * cm"
+        vis="KLM_air_vis">
+        <slice material="Air" thickness="KLMBarrelInnerGapThickness"/>
+      </layer>
+
+      <layer id="102" name="AluminumInnerCase11"
+	inner_r="KLMBarrelInnerAluminumCase11_rmin"
+	outer_z="KLM_length/2.0"
+	vis="KLM_aluminum_vis">
+      <slice material="Aluminum5083" thickness="KLMBarrelAluminumCaseThickness"/>
+      </layer>
+
+      <layer id="103" name="InnerScintillator11"
+        inner_r="KLMBarrelInnerScintillator11_rmin"
+        outer_z="KLM_length/2.0 + 2.0 * cm"
+        vis="KLM_scintillator_vis">
+        <slice material="PlasticScint" thickness="KLMBarrelScintillatorThickness" sensitive="true"/>
+      </layer>
+
+      <layer id="104" name="OuterScintillator11"
+        inner_r="KLMBarrelOuterScintillator11_rmin"
+        outer_z="KLM_length/2.0 + 3.0 * cm"
+        vis="KLM_scintillator_vis">
+        <slice material="PlasticScint" thickness="KLMBarrelScintillatorThickness" sensitive="true"/>
+      </layer>
+
+      <layer id="105" name="AluminumOuterCase11"
+	inner_r="KLMBarrelOuterAluminumCase11_rmin"
+	outer_z="KLM_length/2.0"
+	vis="KLM_aluminum_vis">
+      <slice material="Aluminum5083" thickness="KLMBarrelAluminumCaseThickness"/>
+      </layer>
+
+      <layer id="106" name="OuterGap11"
+        inner_r="KLMBarrelOuterGap11_rmin"
+        outer_z="KLM_length/2.0 - 10.0 * cm"
+        vis="KLM_air_vis">
+      <slice material="Air" thickness="KLMBarrelGapThickness"/>
+      </layer>
+
+
+      <layer id="111" name="SteelLayer12"
+        inner_r="KLMBarrelSteelLayer12_rmin"
+        outer_z="KLM_length/2.0 - 6.0 * cm"
+        vis="KLM_steel_vis">
+        <slice material="Steel235" thickness="KLMBarrelFirstSteelLayerThickness"/>
+      </layer>
+
+      <layer id="117" name="InnerGap12"
+        inner_r="KLMBarrelInnerGap12_rmin"
+        outer_z="KLM_length/2.0 - 10.0 * cm"
+        vis="KLM_air_vis">
+        <slice material="Air" thickness="KLMBarrelInnerGapThickness"/>
+      </layer>
+
+      <layer id="112" name="AluminumInnerCase12"
+	inner_r="KLMBarrelInnerAluminumCase12_rmin"
+	outer_z="KLM_length/2.0"
+	vis="KLM_aluminum_vis">
+      <slice material="Aluminum5083" thickness="KLMBarrelAluminumCaseThickness"/>
+      </layer>
+
+      <layer id="113" name="InnerScintillator12"
+        inner_r="KLMBarrelInnerScintillator12_rmin"
+        outer_z="KLM_length/2.0 + 2.0 * cm"
+        vis="KLM_scintillator_vis">
+        <slice material="PlasticScint" thickness="KLMBarrelScintillatorThickness" sensitive="true"/>
+      </layer>
+
+      <layer id="114" name="OuterScintillator12"
+        inner_r="KLMBarrelOuterScintillator12_rmin"
+        outer_z="KLM_length/2.0 + 3.0 * cm"
+        vis="KLM_scintillator_vis">
+        <slice material="PlasticScint" thickness="KLMBarrelScintillatorThickness" sensitive="true"/>
+      </layer>
+
+      <layer id="115" name="AluminumOuterCase12"
+	inner_r="KLMBarrelOuterAluminumCase12_rmin"
+	outer_z="KLM_length/2.0"
+	vis="KLM_aluminum_vis">
+      <slice material="Aluminum5083" thickness="KLMBarrelAluminumCaseThickness"/>
+      </layer>
+
+      <layer id="116" name="OuterGap12"
+        inner_r="KLMBarrelOuterGap12_rmin"
+        outer_z="KLM_length/2.0 - 10.0 * cm"
+        vis="KLM_air_vis">
+      <slice material="Air" thickness="KLMBarrelGapThickness"/>
+      </layer>
+
+
+      <layer id="121" name="SteelLayer13"
+        inner_r="KLMBarrelSteelLayer13_rmin"
+        outer_z="KLM_length/2.0 - 6.0 * cm"
+        vis="KLM_steel_vis">
+        <slice material="Steel235" thickness="KLMBarrelFirstSteelLayerThickness"/>
+      </layer>
+
+      <layer id="127" name="InnerGap13"
+        inner_r="KLMBarrelInnerGap13_rmin"
+        outer_z="KLM_length/2.0 - 10.0 * cm"
+        vis="KLM_air_vis">
+        <slice material="Air" thickness="KLMBarrelInnerGapThickness"/>
+      </layer>
+
+      <layer id="122" name="AluminumInnerCase13"
+	inner_r="KLMBarrelInnerAluminumCase13_rmin"
+	outer_z="KLM_length/2.0"
+	vis="KLM_aluminum_vis">
+      <slice material="Aluminum5083" thickness="KLMBarrelAluminumCaseThickness"/>
+      </layer>
+
+      <layer id="123" name="InnerScintillator13"
+        inner_r="KLMBarrelInnerScintillator13_rmin"
+        outer_z="KLM_length/2.0 + 2.0 * cm"
+        vis="KLM_scintillator_vis">
+        <slice material="PlasticScint" thickness="KLMBarrelScintillatorThickness" sensitive="true"/>
+      </layer>
+
+      <layer id="124" name="OuterScintillator13"
+        inner_r="KLMBarrelOuterScintillator13_rmin"
+        outer_z="KLM_length/2.0 + 3.0 * cm"
+        vis="KLM_scintillator_vis">
+        <slice material="PlasticScint" thickness="KLMBarrelScintillatorThickness" sensitive="true"/>
+      </layer>
+
+      <layer id="125" name="AluminumOuterCase13"
+	inner_r="KLMBarrelOuterAluminumCase13_rmin"
+	outer_z="KLM_length/2.0"
+	vis="KLM_aluminum_vis">
+      <slice material="Aluminum5083" thickness="KLMBarrelAluminumCaseThickness"/>
+      </layer>
+
+      <layer id="126" name="OuterGap13"
+        inner_r="KLMBarrelOuterGap13_rmin"
+        outer_z="KLM_length/2.0 - 10.0 * cm"
+        vis="KLM_air_vis">
+      <slice material="Air" thickness="KLMBarrelGapThickness"/>
+      </layer>
+
+
+      <layer id="131" name="SteelLayer14"
+        inner_r="KLMBarrelSteelLayer14_rmin"
+        outer_z="KLM_length/2.0 - 6.0 * cm"
+        vis="KLM_steel_vis">
+        <slice material="Steel235" thickness="KLMBarrelFirstSteelLayerThickness"/>
+      </layer>
+
+      <layer id="137" name="InnerGap14"
+        inner_r="KLMBarrelInnerGap14_rmin"
+        outer_z="KLM_length/2.0 - 10.0 * cm"
+        vis="KLM_air_vis">
+        <slice material="Air" thickness="KLMBarrelInnerGapThickness"/>
+      </layer>
+
+      <layer id="132" name="AluminumInnerCase14"
+	inner_r="KLMBarrelInnerAluminumCase14_rmin"
+	outer_z="KLM_length/2.0"
+	vis="KLM_aluminum_vis">
+      <slice material="Aluminum5083" thickness="KLMBarrelAluminumCaseThickness"/>
+      </layer>
+
+      <layer id="133" name="InnerScintillator14"
+        inner_r="KLMBarrelInnerScintillator14_rmin"
+        outer_z="KLM_length/2.0 + 2.0 * cm"
+        vis="KLM_scintillator_vis">
+        <slice material="PlasticScint" thickness="KLMBarrelScintillatorThickness" sensitive="true"/>
+      </layer>
+
+      <layer id="134" name="OuterScintillator14"
+        inner_r="KLMBarrelOuterScintillator14_rmin"
+        outer_z="KLM_length/2.0 + 3.0 * cm"
+        vis="KLM_scintillator_vis">
+        <slice material="PlasticScint" thickness="KLMBarrelScintillatorThickness" sensitive="true"/>
+      </layer>
+
+      <layer id="135" name="AluminumOuterCase14"
+	inner_r="KLMBarrelOuterAluminumCase14_rmin"
+	outer_z="KLM_length/2.0"
+	vis="KLM_aluminum_vis">
+      <slice material="Aluminum5083" thickness="KLMBarrelAluminumCaseThickness"/>
+      </layer>
+
+      <layer id="136" name="OuterGap14"
+        inner_r="KLMBarrelOuterGap14_rmin"
+        outer_z="KLM_length/2.0 - 10.0 * cm"
+        vis="KLM_air_vis">
+      <slice material="Air" thickness="KLMBarrelGapThickness"/>
+      </layer>
+
+      <!--
+      <layer id="999" name="OuterSteel"
+        inner_r="3500*mm"
+        outer_z="KLM_length/2.0"
+        vis="KLM_steel_vis">
+        <slice material="Steel235" thickness="1000*mm"/>
+      </layer>
+      -->
+
+      <!--
+      <layer id="1" name="InnerVacuumVessel"
+        inner_r="SolenoidBarrelInnerVacuumVessel_rmin"
+        outer_z="SolenoidBarrelInnerVacuumVessel_zmax"
+        vis="SolenoidCryostatVis">
+        <slice material="Aluminum5083" thickness="SolenoidBarrelInnerVacuumVesselThickness"/>
+      </layer>
+      <layer id="2" name="InnerSecondMLILayer"
+        inner_r="SolenoidBarrelInnerSecondMLILayer_rmin"
+        outer_z="SolenoidBarrelInnerSecondMLILayer_zmax"
+        vis="SolenoidCryostatVis">
+        <slice material="MylarMLI" thickness="SolenoidBarrelInnerSecondMLILayerThickness"/>
+      </layer>
+      <layer id="3" name="InnerThermalShield"
+        inner_r="SolenoidBarrelInnerThermalShield_rmin"
+        outer_z="SolenoidBarrelInnerThermalShield_zmax"
+        vis="SolenoidCryostatVis">
+        <slice material="Copper" thickness="SolenoidBarrelInnerThermalShieldThickness"/>
+      </layer>
+      <layer id="4" name="InnerFirstMLILayer"
+        inner_r="SolenoidBarrelInnerFirstMLILayer_rmin"
+        outer_z="SolenoidBarrelInnerFirstMLILayer_zmax"
+        vis="SolenoidCryostatVis">
+        <slice material="MylarMLI" thickness="SolenoidBarrelInnerFirstMLILayerThickness"/>
+      </layer>
+      <layer id="5" name="InnerHeliumVessel"
+        inner_r="SolenoidBarrelInnerHeliumVessel_rmin"
+        outer_z="SolenoidBarrelInnerHeliumVessel_zmax"
+        vis="SolenoidCryostatVis">
+        <slice material="Aluminum5083" thickness="SolenoidBarrelInnerHeliumVesselThickness"/>
+      </layer>
+
+      <layer id="6" name="InnerHelium"
+        inner_r="SolenoidBarrelInnerHelium_rmin"
+        outer_z="SolenoidBarrelInnerHelium_zmax"
+        vis="SolenoidCryostatVis">
+        <slice material="Helium" thickness="SolenoidBarrelInnerHeliumThickness"/>
+      </layer>
+
+      <layer id="7" name="CoilFormer"
+        inner_r="SolenoidBarrelCoilFormer_rmin"
+        outer_z="SolenoidBarrelCoilFormer_zmax"
+        vis="SolenoidCryostatVis">
+        <slice material="Aluminum5083" thickness="SolenoidBarrelCoilFormerThickness"/>
+      </layer>
+      <layer id="8" name="Coil"
+        inner_r="SolenoidBarrelCoil_rmin"
+        outer_z="SolenoidBarrelCoil_zmax"
+        vis="SolenoidCryostatVis">
+        <slice material="Aluminum" thickness="SolenoidBarrelCoilThickness"/>
+      </layer>
+      <layer id="9" name="CoilOverbind"
+        inner_r="SolenoidBarrelCoilOverbind_rmin"
+        outer_z="SolenoidBarrelCoilOverbind_zmax"
+        vis="SolenoidCryostatVis">
+        <slice material="Aluminum5083" thickness="SolenoidBarrelCoilOverbindThickness"/>
+      </layer>
+
+      <layer id="10" name="OuterHelium"
+        inner_r="SolenoidBarrelOuterHelium_rmin"
+        outer_z="SolenoidBarrelOuterHelium_zmax"
+        vis="SolenoidCryostatVis">
+        <slice material="Helium" thickness="SolenoidBarrelOuterHeliumThickness"/>
+      </layer>
+
+      <layer id="11" name="OuterHeliumVessel"
+        inner_r="SolenoidBarrelOuterHeliumVessel_rmin"
+        outer_z="SolenoidBarrelOuterHeliumVessel_zmax"
+        vis="SolenoidCryostatVis">
+        <slice material="Aluminum5083" thickness="SolenoidBarrelOuterHeliumVesselThickness"/>
+      </layer>
+      <layer id="12" name="OuterFirstMLILayer"
+        inner_r="SolenoidBarrelOuterFirstMLILayer_rmin"
+        outer_z="SolenoidBarrelOuterFirstMLILayer_zmax"
+        vis="SolenoidCryostatVis">
+        <slice material="MylarMLI" thickness="SolenoidBarrelOuterFirstMLILayerThickness"/>
+      </layer>
+      <layer id="13" name="OuterThermalShield"
+        inner_r="SolenoidBarrelOuterThermalShield_rmin"
+        outer_z="SolenoidBarrelOuterThermalShield_zmax"
+        vis="SolenoidCryostatVis">
+        <slice material="Copper" thickness="SolenoidBarrelOuterThermalShieldThickness"/>
+      </layer>
+      <layer id="14" name="OuterSecondMLILayer"
+        inner_r="SolenoidBarrelOuterSecondMLILayer_rmin"
+        outer_z="SolenoidBarrelOuterSecondMLILayer_zmax"
+        vis="SolenoidCryostatVis">
+        <slice material="MylarMLI" thickness="SolenoidBarrelOuterSecondMLILayerThickness"/>
+      </layer>
+
+      <layer id="15" name="OuterVacuumVessel"
+        inner_r="SolenoidBarrelOuterVacuumVessel_rmin"
+        outer_z="SolenoidBarrelOuterVacuumVessel_zmax"
+        vis="SolenoidCryostatVis">
+        <slice material="Aluminum5083" thickness="SolenoidBarrelOuterVacuumVesselThickness"/>
+      </layer>
+
+      -->
+
+    </detector>
+
+  </detectors>
+
+  <readouts>
+    <readout name="KLMReadout">
+      <!--    
+	      <id>system:3,layer:8</id>
+      <segmentation type="CartesianGridXY" grid_size_x="5*cm" grid_size_y="5*cm"/>
+
+
+      <id>system:6,barrel:3,module:4,layer:8,slice:5,x:32:-16,y:-16</id>
+      -->
+      <segmentation type="NoSegmentation"/>
+      <id>system:6,barrel:3,module:4,layer:8,slice:5</id>
+    </readout>
+  </readouts>
+</lccdd>
+
