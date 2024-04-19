@@ -869,6 +869,112 @@
       8.45347*eV  0.166779*mm
       "/>
     <!-- END dRICH and pfRICH material optical properties -->
+
+    <!-- copy from github.com/chekanov/DualCrystalHcal/blob/main/compact/DRSingleCrystal.xml -->
+    <matrix name="RI_PS" coldim="2" values="
+      1.1*eV 1.5764
+      1.37760*eV 1.5749
+      1.45864*eV 1.5764
+      1.54980*eV 1.5782
+      1.65312*eV 1.5803
+      1.71013*eV 1.5815
+      1.77120*eV 1.5829
+      1.83680*eV 1.5845
+      1.90745*eV 1.5862
+      1.98375*eV 1.5882
+      2.06640*eV 1.5904
+      2.10143*eV 1.5914
+      2.13766*eV 1.5924
+      2.17516*eV 1.5935
+      2.21400*eV 1.5947
+      2.25426*eV 1.5959
+      2.29600*eV 1.5972
+      2.33932*eV 1.5986
+      2.38431*eV 1.6
+      2.43106*eV 1.6016
+      2.47968*eV 1.6033
+      2.53029*eV 1.6051
+      2.58300*eV 1.607
+      2.63796*eV 1.609
+      2.69531*eV 1.6112
+      2.75520*eV 1.6136
+      2.81782*eV 1.6161
+      2.88335*eV 1.617
+      2.95200*eV 1.623
+      3.09960*eV 1.62858
+      3.54241*eV 1.65191
+      4.13281*eV 1.69165
+    "/>
+    <matrix name="AbsLen_PS" coldim="2" values="
+      1.1*eV 2.714*m
+      1.37760*eV 2.714*m
+      1.45864*eV 3.619*m
+      1.54980*eV 5.791*m
+      1.65312*eV 4.343*m
+      1.71013*eV 7.896*m
+      1.77120*eV 5.429*m
+      1.83680*eV 36.19*m
+      1.90745*eV 17.37*m
+      1.98375*eV 36.19*m
+      2.06640*eV 5.429*m
+      2.10143*eV 13.00*m
+      2.13766*eV 14.50*m
+      2.17516*eV 16.00*m
+      2.21400*eV 18.00*m
+      2.25426*eV 16.50*m
+      2.29600*eV 17.00*m
+      2.33932*eV 14.00*m
+      2.38431*eV 16.00*m
+      2.43106*eV 15.00*m
+      2.47968*eV 14.50*m
+      2.53029*eV 13.00*m
+      2.58300*eV 12.00*m
+      2.63796*eV 10.00*m
+      2.69531*eV 8.000*m
+      2.75520*eV 7.238*m
+      2.81782*eV 4.000*m
+      2.88335*eV 1.200*m
+      2.95200*eV 0.500*m
+      3.09960*eV 0.200*m
+      3.54241*eV 0.200*m
+      4.13281*eV 0.100*m
+    "/>
+    <matrix name="scintFast_PS" coldim="2" values="
+      1.1*eV 0.
+      1.37760*eV 0.
+      1.45864*eV 0.
+      1.54980*eV 0.
+      1.65312*eV 0.
+      1.71013*eV 0.
+      1.77120*eV 0.
+      1.83680*eV 0.
+      1.90745*eV 0.0003
+      1.98375*eV 0.0008
+      2.06640*eV 0.0032
+      2.10143*eV 0.0057
+      2.13766*eV 0.0084
+      2.17516*eV 0.0153
+      2.21400*eV 0.0234
+      2.25426*eV 0.0343
+      2.29600*eV 0.0604
+      2.33932*eV 0.0927
+      2.38431*eV 0.1398
+      2.43106*eV 0.2105
+      2.47968*eV 0.2903
+      2.53029*eV 0.4122
+      2.58300*eV 0.5518
+      2.63796*eV 0.7086
+      2.69531*eV 0.8678
+      2.75520*eV 1.
+      2.81782*eV 0.8676
+      2.88335*eV 0.2311
+      2.95200*eV 0.0033
+      3.09960*eV 0.0012
+      3.54241*eV 0.
+      4.13281*eV 0.
+    "/>
+    <!-- End of github copy -->
+
   </properties>
   <materials>
     <material name="AirOptical">
@@ -957,6 +1063,49 @@
       <property name="RINDEX" ref="RINDEX__DIRCQuartz"/>
       <property name="ABSLENGTH" ref="ABSLENGTH__DIRCQuartz"/>
     </material>
+
+    <!-- Insertion for Scintillation process debugging: -->
+
+    <material name="QuartzOptical_debug">
+      <D type="density" value="2.2" unit="g/cm3"/>
+      <composite n="1" ref="Si"/>
+      <composite n="2" ref="O"/>
+
+      <property name="RINDEX" ref="RINDEX__DIRCQuartz"/>
+      <property name="ABSLENGTH" ref="ABSLENGTH__DIRCQuartz"/>
+
+      <constant name="BirksConstant" value="0.126*mm/MeV"/>
+	<!--	
+      <property name="RINDEX" coldim="2"
+	      	values="1.000*eV  2.4
+	      		1.551*eV  2.4
+	      		3.545*eV  2.40
+	      		10.00*eV  2.40"/>
+      <property name="ABSLENGTH" coldim="2"
+	      	values="1.000*eV  200.0*cm
+	      		1.551*eV  200.0*cm
+	      		3.545*eV  200.0*cm
+	      		10.00*eV  200.0*cm"/>
+      
+
+      <property name="SCINTILLATIONYIELD1"  value="2000.0/MeV"/>
+      <property name="SCINTILLATIONTIMECONSTANT1"    value="6.0*ns"/>
+      <property name="RESOLUTIONSCALE"     value="1.0"/>
+      
+      <property name="SCINTILLATIONCOMPONENT1" coldim="2"
+	      	values="1.000*eV  1.0
+	      		1.551*eV  1.0
+	      		3.545*eV  1.0
+	      		10.00*eV  1.0"/>
+	-->
+
+    </material>
+
+
+
+
+    <!-- End of insertion -->
+
     <material name="EpotekOptical">
       <D type="density" value="1.2" unit="g/cm3"/>
       <composite n="5" ref="H"/>
@@ -1013,6 +1162,60 @@
       <property name="SCINTILLATIONTIMECONSTANT1"    value="6.0*ns"/>
       <property name="RESOLUTIONSCALE"     value="1.0"/>
     </material>
+
+    <!-- Start additions for KLM -->
+    <material name="PlasticScint_optical"> <!-- not yet working -->
+      <D type="density" unit="g/cm3" value="1.032"/>
+      <composite n="9" ref="C"/>
+      <composite n="10" ref="H"/>
+       
+      <constant name="BirksConstant" value="0.926*mm/MeV"/>
+      
+      <!-- For testing: using properties of leadtungsten_optical as placeholder -->
+      <property name="RINDEX" coldim="2"
+	      	values="1.000*eV  2.4
+	      		1.551*eV  2.4
+	      		3.545*eV  2.40
+	      		10.00*eV  2.40"/>
+      <property name="ABSLENGTH" coldim="2"
+	      	values="1.000*eV  200.0*cm
+	      		1.551*eV  200.0*cm
+	      		3.545*eV  200.0*cm
+	      		10.00*eV  200.0*cm"/>
+      <property name="SCINTILLATIONYIELD1"  value="2000.0/MeV"/>
+      <property name="SCINTILLATIONTIMECONSTANT1"    value="6.0*ns"/>
+      <property name="RESOLUTIONSCALE"     value="1.0"/>
+      
+      <property name="SCINTILLATIONCOMPONENT1" coldim="2"
+	      	values="1.000*eV  1.0
+	      		1.551*eV  1.0
+	      		3.545*eV  1.0
+	      		10.00*eV  1.0"/>
+
+    </material>
+
+    <!-- copy from github.com/chekanov/DualCrystalHcal/blob/main/compact/DRSingleCrystal.xml -->
+    <material name="DR_Polystyrene"> <!-- working scintillator material -->
+      <D value="1.032" unit="g/cm3"/>
+      <composite n="19" ref="C"/>
+      <composite n="21" ref="H"/>
+      <property name="RINDEX" ref="RI_PS"/>
+      <property name="ABSLENGTH" ref="AbsLen_PS"/>
+      <!--
+      <property name="FASTCOMPONENT" ref="scintFast_PS"/>
+      <constant name="SCINTILLATIONYIELD" value="10.0/keV"/>
+      <constant name="FASTTIMECONSTANT" value="2.8*ns"/>
+      <constant name="SCINTILLATIONTIMECONSTANT1" value="2.8*ns"/>
+      -->
+      <property name="SCINTILLATIONCOMPONENT1" ref="scintFast_PS"/>
+      <!-- I reduced the SCINTILLATIONYIELD by a factor of 100 from reference to speed up the simulation for now -->
+      <constant name="SCINTILLATIONYIELD" value="0.1/keV"/>
+      <constant name="SCINTILLATIONTIMECONSTANT1" value="2.8*ns"/>
+      <constant name="RESOLUTIONSCALE" value="1."/>
+  </material>
+    <!-- End of github copy -->
+
+    <!-- End additions for KLM -->
   </materials>
   <surfaces>
     <opticalsurface finish="polished" model="glisur" name="MirrorOpticalSurface" type="dielectric_metal" value="0">
