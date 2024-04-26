@@ -33,6 +33,11 @@ static Ref_t create_detector(Detector& description, xml_h e, SensitiveDetector s
   string        det_name  = x_det.nameStr();
   xml_comp_t    x_staves  = x_det.staves();
   xml_comp_t    x_dim     = x_det.dimensions();
+
+  // Sensor plane variables
+  xml_comp_t xml_sensor       = x_det.child(_Unicode(sensor));
+  double     sensor_thickness = xml_sensor.thickness();
+
   int           nsides    = x_dim.numsides();
   double        inner_r   = x_dim.rmin();
   double        dphi      = (2*M_PI/nsides);
@@ -70,7 +75,7 @@ static Ref_t create_detector(Detector& description, xml_h e, SensitiveDetector s
 
   Volume mod_vol("stave",trd,air);
 
-  sens.setType("calorimeter");
+  sens.setType("tracker");
   { // =====  buildBarrelStave(description, sens, module_volume) =====
     // Parameters for computing the layer X dimension:
     double stave_z  = trd_y1;
@@ -104,11 +109,15 @@ static Ref_t create_detector(Detector& description, xml_h e, SensitiveDetector s
           Volume     s_vol(s_name,s_box,description.material(x_slice.materialStr()));
           DetElement slice(layer,s_name,det_id);
 
-          if ( x_slice.isSensitive() ) {
-            s_vol.setSensitiveDetector(sens);
-          }
           slice.setAttributes(description,s_vol,x_slice.regionStr(),x_slice.limitsStr(),x_slice.visStr());
 
+	  // Sensor plane construction
+	  Box    sensor_box("sensor_box", sensor_thickness/2, stave_z-tolerance, s_thick / 2-tolerance);
+	  Volume sensor_vol("sensor_vol", sensor_box, description.material(xml_sensor.materialStr()));
+	  sensor_vol.setVisAttributes(description.visAttributes(xml_sensor.visStr())).setSensitiveDetector(sens);
+
+	  if(s_num==3 || s_num==6) s_vol.placeVolume(sensor_vol, Position(l_dim_x-tolerance-0.5*mm, 0, 0));	    
+	  
           // Slice placement.
           PlacedVolume slice_phv = l_vol.placeVolume(s_vol,Position(0,0,s_pos_z+s_thick/2));
           slice_phv.addPhysVolID("slice", s_num);

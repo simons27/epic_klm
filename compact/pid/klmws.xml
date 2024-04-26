@@ -57,6 +57,7 @@
       value="HcalSteelThickness + 2 * (2 * (HcalRPCMylarThickness + HcalRPCCopperThickness) + HcalRPCPSFoamThickness + 2 * HcalRPCGlassThickness + HcalRPCGasThickness) + HcalRPCMylarThickness"/>
 
     <comment> other additions: </comment>
+    <constant name="sensor_thickness" value="1.0*mm" />
     <!--
     <constant name="HcalBarrelAvailThickness" value="HcalBarrel_thickness"/>
     -->
@@ -103,12 +104,16 @@
 	<!--
         <slice material="PlasticScint_optical" thickness="HcalScintillatorThickness" sensitive="no" limits="cal_limits"/>
 	-->
-        <slice material="DR_Polystyrene" thickness="HcalScintillatorThickness" sensitive="yes" limits="cal_limits"/>
+        <slice material="DR_Polystyrene" thickness="HcalScintillatorThickness" sensitive="no"/>
 	<slice material="Polystyrene"  thickness="HcalScintillatorPSThickness"/>
         <slice material="Polystyrene"  thickness="HcalScintillatorPSThickness"/>
-        <slice material="DR_Polystyrene" thickness="HcalScintillatorThickness" sensitive="yes" limits="cal_limits"/>
+        <slice material="DR_Polystyrene" thickness="HcalScintillatorThickness" sensitive="no"/>
         <slice material="Polystyrene"  thickness="HcalScintillatorPSThickness"/>
       </layer>
+      <sensor
+        thickness="sensor_thickness"
+        material="QuartzOptical"
+        vis="AnlRed"/>
     </detector>
 
 
