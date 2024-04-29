@@ -20,6 +20,10 @@
 #include "DD4hep/DetFactoryHelper.h"
 #include "XML/Layering.h"
 
+// New inclusions to manage optical surfaces:
+#include "DD4hep/OpticalSurfaces.h"
+#include "DDRec/Surface.h"
+
 using namespace std;
 using namespace dd4hep;
 using namespace dd4hep::detail;
@@ -108,6 +112,16 @@ static Ref_t create_detector(Detector& description, xml_h e, SensitiveDetector s
             s_vol.setSensitiveDetector(sens);
           }
           slice.setAttributes(description,s_vol,x_slice.regionStr(),x_slice.limitsStr(),x_slice.visStr());
+
+	  // addition for reflective scintillator surfaces:
+          //if ( x_slice.isSensitive() && (l_num == 1) && (j==0) && (s_num==1) ) {
+          //if ( x_slice.isSensitive() && (l_num == 1) && (j==0) ) {
+          if ( false ) {
+	    auto surfMgr = description.surfaceManager();
+	    auto surf = surfMgr.opticalSurface("DIRC_MirrorOpticalSurface");
+	    SkinSurface skin(description, sdet, Form("dirc_mirror_optical_surface"), surf, s_name);
+	    skin.isValid();
+          } 
 
           // Slice placement.
           PlacedVolume slice_phv = l_vol.placeVolume(s_vol,Position(0,0,s_pos_z+s_thick/2));
