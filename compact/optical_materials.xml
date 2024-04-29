@@ -1208,8 +1208,8 @@
       <constant name="SCINTILLATIONTIMECONSTANT1" value="2.8*ns"/>
       -->
       <property name="SCINTILLATIONCOMPONENT1" ref="scintFast_PS"/>
-      <!-- I reduced the SCINTILLATIONYIELD by a factor of 100 from reference to speed up the simulation for now -->
-      <constant name="SCINTILLATIONYIELD" value="0.1/keV"/>
+      <!-- I reduced the SCINTILLATIONYIELD by a factor of 100 from reference to speed up the simulation for now; 10/keV seems to be a good rough approximation -->
+      <constant name="SCINTILLATIONYIELD" value="0.01/keV"/>
       <constant name="SCINTILLATIONTIMECONSTANT1" value="2.8*ns"/>
       <constant name="RESOLUTIONSCALE" value="1."/>
   </material>
