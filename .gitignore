@@ -50,3 +50,7 @@ install/
 CMakeCache.txt
 CMakeFiles/
 
+# slurm
+*.err
+*.out
+.ipynb_checkpoints
