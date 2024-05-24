@@ -11,5 +11,5 @@ cd /path/to/eic/epic_klm
 cat << EOF | /path/to/eic/eic-shell
 source install/setup.sh
 echo $DETECTOR_PATH
-/usr/local/bin/ddsim --steeringFile simulations/steering/npsim_local3.py --compactFile /path/to/eic/epic_klm/epic_klmws_only.xml -G -N 10 --gun.particle "mu-" --outputFile ../path/to/root_output_directory/mu_5GeV_10events_run_1.edm4hep.root --part.userParticleHandler=""
+/usr/local/bin/ddsim --steeringFile simulations/steering/npsim_local3.py --compactFile /path/to/eic/epic_klm/epic_klmws_only.xml -G -N 10 --gun.particle "mu-" --outputFile ../path/to/root_output_directory/mu_5GeV_1events_run_10.edm4hep.root --part.userParticleHandler="" 
 EOF
