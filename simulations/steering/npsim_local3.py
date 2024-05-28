@@ -85,6 +85,7 @@ SIM.action.mapActions['DIRC'] = 'Geant4OpticalTrackerAction'
 SIM.action.mapActions['HcalBarrel'] = 'Geant4OpticalTrackerAction'
 
   # Use the optical photon efficiency stacking action for hpDIRC
+  #for one layer: slice2
 SIM.action.stack = [
   {
     "name": "OpticalPhotonEfficiencyStackingAction",
