@@ -120,7 +120,8 @@ static Ref_t create_detector(Detector& description, xml_h e, SensitiveDetector s
 	  Volume sensor_vol("sensor_vol", sensor_box, description.material(xml_sensor.materialStr()));
 	  sensor_vol.setVisAttributes(description.visAttributes(xml_sensor.visStr())).setSensitiveDetector(sens);
 
-	  if(s_num==3 || s_num==6) s_vol.placeVolume(sensor_vol, Position(l_dim_x-tolerance-0.5*mm, 0, 0));	    
+	  //Rowan: for one layer - use only s_num == 2
+	  if(s_num==2) s_vol.placeVolume(sensor_vol, Position(l_dim_x-tolerance-0.5*mm, 0, 0));	    
 	  
 	  // addition for reflective scintillator surfaces (incomplete, currently unused):
           if ( false ) {

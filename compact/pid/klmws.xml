@@ -27,7 +27,12 @@
       4 cm wide scintillator strips are read out along WLS fibers
       strips are oriented z-phi in barrel, x-y in endcaps
     </comment>
+    <!-- ROWAN: old value:
     <constant name="HcalScintillatorNbLayers"       value="14" />
+         new value for one layer below
+    -->
+    <constant name="HcalScintillatorNbLayers"       value="1" />
+    
     <constant name="HcalScintillatorPSThickness"    value="300*um" />
     <constant name="HcalScintillatorWidth"          value="40*mm" />
     <constant name="HcalScintillatorThickness"      value="10*mm" />
@@ -99,16 +104,13 @@
         z="HcalBarrelLength"/>
       <staves vis="HcalBarrelVis"/>
       <layer repeat="HcalScintillatorNbLayers">
-        <slice material="Steel235"     thickness="HcalSteelThickness" vis="AnlGray"/>
+	<!-- ROWAN: removed other layers for one layer setup-->
 	<slice material="AirOptical"  thickness="HcalScintillatorPSThickness" surface="DIRC_MirrorOpticalSurface"/>
 	<!--
         <slice material="PlasticScint_optical" thickness="HcalScintillatorThickness" sensitive="no" limits="cal_limits"/>
 	-->
         <slice material="DR_Polystyrene" thickness="HcalScintillatorThickness" sensitive="no" limits="cal_limits" surface="DIRC_MirrorOpticalSurface"/>
 	<slice material="AirOptical"  thickness="HcalScintillatorPSThickness" surface="DIRC_MirrorOpticalSurface"/>
-        <slice material="AirOptical"  thickness="HcalScintillatorPSThickness"/>
-        <slice material="DR_Polystyrene" thickness="HcalScintillatorThickness" sensitive="no" limits="cal_limits"/>
-        <slice material="AirOptical"  thickness="HcalScintillatorPSThickness"/>
       </layer>
       <sensor
         thickness="sensor_thickness"
