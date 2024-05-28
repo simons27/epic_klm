@@ -103,10 +103,10 @@ static Ref_t create_detector(Detector& description, xml_h e, SensitiveDetector s
         DetElement layer(stave_det, l_name, det_id);
 
   
-	int num_segments = 10;
+	int num_segments = 50;
 	double curr_x = -l_dim_x;
 	int global_s_num = 1;
-	double test_s_pos_z = -(l_thickness / 2);
+	//double test_s_pos_z = -(l_thickness / 2);
 	// Loop over segments of the plane
 	for(int curr_segment = 0; curr_segment < num_segments; curr_segment++){
 	  // Loop over the sublayers or slices for this layer.
@@ -141,7 +141,7 @@ static Ref_t create_detector(Detector& description, xml_h e, SensitiveDetector s
 	    /* EDIT HERE
 	    PlacedVolume slice_phv = l_vol.placeVolume(s_vol,Position(curr_x,0,s_pos_z+s_thick/2));
 	    */
-	    PlacedVolume slice_phv = l_vol.placeVolume(s_vol,Position(curr_x,0,test_s_pos_z));
+	    PlacedVolume slice_phv = l_vol.placeVolume(s_vol,Position(curr_x,0,s_pos_z+s_thick/2));
 
 	    
 	    slice_phv.addPhysVolID("slice", global_s_num);
@@ -153,6 +153,7 @@ static Ref_t create_detector(Detector& description, xml_h e, SensitiveDetector s
 	    ++s_num;
 	  }
 	  curr_x += 2 * (l_dim_x - tolerance) / num_segments;
+	  //s_pos_z = -(l_thickness / 2);
 	}
               
 
