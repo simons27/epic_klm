@@ -24,8 +24,8 @@ SIM.enableGun
 SIM.gun.thetaMin = 90*deg
 SIM.gun.thetaMax = 90*deg
 SIM.gun.distribution = "cos(theta)"
-SIM.gun.phiMin = 0*deg
-SIM.gun.phiMax = 0*deg
+SIM.gun.phiMin = 22.5*deg
+SIM.gun.phiMax = 22.5*deg
 SIM.gun.momentumMin = 5.0*GeV
 SIM.gun.momentumMax = 5.0*GeV
 SIM.gun.particle = "pi-"

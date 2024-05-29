@@ -40,7 +40,7 @@ static Ref_t create_detector(Detector& description, xml_h e, SensitiveDetector s
 
   // Sensor plane variables
   xml_comp_t xml_sensor       = x_det.child(_Unicode(sensor));
-  //double     sensor_thickness = xml_sensor.thickness();
+  double     sensor_thickness = xml_sensor.thickness();
   double sensor_y_width = 0.05;
 
   int           nsides    = x_dim.numsides();
@@ -105,8 +105,8 @@ static Ref_t create_detector(Detector& description, xml_h e, SensitiveDetector s
 
 
 	/* QUICK FIX - LIMITED TO 32 SEGMENTS BECAUSE OF SEGMENTATION MASK IN compact/pid/klmws.xml FILE*/
-	int num_segments = 32;
-	double sensor_thickness = 2 * (l_dim_x - tolerance) / (num_segments);
+	int num_segments = 1;
+	//double sensor_thickness = 2 * (l_dim_x - tolerance) / (num_segments);
 
 	
 	//int num_segments = std::floor((l_dim_x-tolerance) / (sensor_thickness / 2));
