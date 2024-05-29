@@ -39,8 +39,9 @@ static Ref_t create_detector(Detector& description, xml_h e, SensitiveDetector s
   xml_comp_t    x_dim     = x_det.dimensions();
 
   // Sensor plane variables
-  //xml_comp_t xml_sensor       = x_det.child(_Unicode(sensor));
-  //double     sensor_thickness = xml_sensor.thickness();
+  xml_comp_t xml_sensor       = x_det.child(_Unicode(sensor));
+  double     sensor_thickness = xml_sensor.thickness();
+  double sensor_y_width = 0.05;
 
   int           nsides    = x_dim.numsides();
   double        inner_r   = x_dim.rmin();
@@ -106,15 +107,19 @@ static Ref_t create_detector(Detector& description, xml_h e, SensitiveDetector s
 	int num_segments = 50;
 	double curr_x = -l_dim_x;
 	int global_s_num = 1;
+	//int global_sensor_num = 1;
 	//double test_s_pos_z = -(l_thickness / 2);
 	// Loop over segments of the plane
 	for(int curr_segment = 0; curr_segment < num_segments; curr_segment++){
 	  // Loop over the sublayers or slices for this layer.
 	  int s_num = 1;
 	  double s_pos_z = -(l_thickness / 2);
+	  double sensor_depth = 0; // Z width of sensor
+	  //double ps_thick = 0;
 	  for(xml_coll_t si(x_layer,_U(slice)); si; ++si)  {
 	    xml_comp_t x_slice = si;
-	    string     s_name  = _toString(curr_segment*100+s_num,"slice%d");
+	    //string     s_name  = _toString(curr_segment*100+s_num,"slice%d");
+	    string     s_name  = _toString(s_num,"slice%d") + _toString(curr_segment,"seg%d");
 	    double     s_thick = x_slice.thickness();
 	    Box        s_box((l_dim_x-tolerance) / num_segments,stave_z-tolerance,s_thick / 2-tolerance);
 	    Volume     s_vol(s_name,s_box,description.material(x_slice.materialStr()));
@@ -122,13 +127,12 @@ static Ref_t create_detector(Detector& description, xml_h e, SensitiveDetector s
 
 	    slice.setAttributes(description,s_vol,x_slice.regionStr(),x_slice.limitsStr(),x_slice.visStr());
 
-	    // Sensor plane construction
-	    //Box    sensor_box("sensor_box", sensor_thickness/2, stave_z-tolerance, s_thick / 2-tolerance);
-	    //Volume sensor_vol("sensor_vol", sensor_box, description.material(xml_sensor.materialStr()));
-	    //sensor_vol.setVisAttributes(description.visAttributes(xml_sensor.visStr())).setSensitiveDetector(sens);
+	    if(s_num == 1){
+	      sensor_depth = l_thickness - s_thick * 2;
+	      //ps_thick = s_thick;
+	    }
 
-	    //if(s_num==3 || s_num==6) s_vol.placeVolume(sensor_vol, Position(l_dim_x-tolerance-0.5*mm, 0, 0));	    
-	  
+
 	    // addition for reflective scintillator surfaces (incomplete, currently unused):
 	    if ( false ) {
 	      auto surfMgr = description.surfaceManager();
@@ -136,25 +140,35 @@ static Ref_t create_detector(Detector& description, xml_h e, SensitiveDetector s
 	      SkinSurface skin(description, sdet, Form("dirc_mirror_optical_surface"), surf, s_name);
 	      skin.isValid();
 	    } 
-
+	    string seg_name = _toString(curr_segment, "sensor%d");
+	    DetElement sensor(slice,seg_name,det_id);
+	    Box    sensor_box("sensor_box", sensor_thickness, sensor_y_width, sensor_depth / 2-tolerance);
+	    Volume sensor_vol("sensor_vol", sensor_box, description.material(xml_sensor.materialStr()));
+	    sensor_vol.setVisAttributes(description.visAttributes(xml_sensor.visStr())).setSensitiveDetector(sens);
+	    //sensor plane
+	    if(s_num == 2) {
+	      PlacedVolume sensor_phv = s_vol.placeVolume(sensor_vol, Position(0, stave_z - tolerance,s_pos_z+s_thick/2));
+	      sensor_phv.addPhysVolID("slice", curr_segment);
+	      sensor.setPlacement(sensor_phv);
+	    }
 	    // Slice placement.
-	    /* EDIT HERE
-	    PlacedVolume slice_phv = l_vol.placeVolume(s_vol,Position(curr_x,0,s_pos_z+s_thick/2));
-	    */
-	    PlacedVolume slice_phv = l_vol.placeVolume(s_vol,Position(curr_x,0,s_pos_z+s_thick/2));
-
-	    
-	    slice_phv.addPhysVolID("slice", global_s_num);
-	    slice.setPlacement(slice_phv);
+	    if(s_num != 100) {
+	      PlacedVolume slice_phv = l_vol.placeVolume(s_vol,Position(curr_x,0,s_pos_z+s_thick/2));
+	      slice_phv.addPhysVolID("slice", global_s_num);
+	      slice.setPlacement(slice_phv);
+	    }
 	    // Increment Z position of slice.
 	    s_pos_z += s_thick;
                                         
 	    // Increment slice number.
 	    ++s_num;
 	  }
-	  curr_x += 2 * (l_dim_x - tolerance) / num_segments;
 	  //s_pos_z = -(l_thickness / 2);
+	  // Sensor plane construction
+	  
+	  curr_x += 2 * (l_dim_x - tolerance) / num_segments;	 
 	}
+	
               
 
         // Set region, limitset, and vis of layer.
