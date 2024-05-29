@@ -143,7 +143,7 @@ static Ref_t create_detector(Detector& description, xml_h e, SensitiveDetector s
 	    string seg_name = _toString(curr_segment, "sensor%d");
 	    DetElement sensor(slice,seg_name,det_id);
 	    Box    sensor_box("sensor_box", sensor_thickness, sensor_y_width, sensor_depth / 2-tolerance);
-	    Volume sensor_vol("sensor_vol", sensor_box, description.material(xml_sensor.materialStr()));
+	    Volume sensor_vol(seg_name, sensor_box, description.material(xml_sensor.materialStr()));
 	    sensor_vol.setVisAttributes(description.visAttributes(xml_sensor.visStr())).setSensitiveDetector(sens);
 	    //sensor plane
 	    if(s_num == 2) {
@@ -152,16 +152,16 @@ static Ref_t create_detector(Detector& description, xml_h e, SensitiveDetector s
 	      sensor.setPlacement(sensor_phv);
 	    }
 	    // Slice placement.
-	    if(s_num != 100) {
-	      PlacedVolume slice_phv = l_vol.placeVolume(s_vol,Position(curr_x,0,s_pos_z+s_thick/2));
-	      slice_phv.addPhysVolID("slice", global_s_num);
-	      slice.setPlacement(slice_phv);
-	    }
+	    PlacedVolume slice_phv = l_vol.placeVolume(s_vol,Position(curr_x,0,s_pos_z+s_thick/2));
+	    slice_phv.addPhysVolID("slice", global_s_num);
+	    slice.setPlacement(slice_phv);
+	    
 	    // Increment Z position of slice.
 	    s_pos_z += s_thick;
                                         
 	    // Increment slice number.
 	    ++s_num;
+	    global_s_num++;
 	  }
 	  //s_pos_z = -(l_thickness / 2);
 	  // Sensor plane construction
