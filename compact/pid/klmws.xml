@@ -57,7 +57,7 @@
       value="HcalSteelThickness + 2 * (2 * (HcalRPCMylarThickness + HcalRPCCopperThickness) + HcalRPCPSFoamThickness + 2 * HcalRPCGlassThickness + HcalRPCGasThickness) + HcalRPCMylarThickness"/>
 
     <comment> other additions: </comment>
-    <constant name="sensor_thickness" value="14.5*mm" />
+    <constant name="sensor_thickness" value="20*mm" />
     <!--
     <constant name="HcalBarrelAvailThickness" value="HcalBarrel_thickness"/>
     -->
