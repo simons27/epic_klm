@@ -41,7 +41,7 @@ static Ref_t create_detector(Detector& description, xml_h e, SensitiveDetector s
   // Sensor plane variables
   xml_comp_t xml_sensor       = x_det.child(_Unicode(sensor));
   double     sensor_thickness = xml_sensor.thickness();
-  double sensor_y_width = 0.05;
+  double sensor_y_width = 0.1;
 
   int           nsides    = x_dim.numsides();
   double        inner_r   = x_dim.rmin();
@@ -110,7 +110,8 @@ static Ref_t create_detector(Detector& description, xml_h e, SensitiveDetector s
 
 	
 	//int num_segments = std::floor((l_dim_x-tolerance) / (sensor_thickness / 2));
-	double curr_x = -l_dim_x;
+	//double curr_x = -l_dim_x;
+	double curr_x = 0;
 	int global_s_num = 1;
 	//int global_sensor_num = 1;
 	//double test_s_pos_z = -(l_thickness / 2);
@@ -149,14 +150,14 @@ static Ref_t create_detector(Detector& description, xml_h e, SensitiveDetector s
 	    } 
 	    string seg_name = _toString(curr_segment, "sensor%d");
 	    //DetElement sensor(slice,seg_name,det_id);
-	    Box    sensor_box("sensor_box", sensor_thickness / 2, sensor_y_width, sensor_depth / 2-tolerance);
+	    Box    sensor_box("sensor_box", sensor_thickness / 2, sensor_y_width / 2, sensor_depth / 2-tolerance);
 	    Volume sensor_vol(seg_name, sensor_box, description.material(xml_sensor.materialStr()));
 	    sensor_vol.setVisAttributes(description.visAttributes(xml_sensor.visStr())).setSensitiveDetector(sens);
 	    //sensor_vol.setVisAttributes(description.visAttributes(xml_sensor.visStr()));
 	    //sensor plane
 	    if(s_num == 2) {
 	      //s_vol.placeVolume(sensor_vol, Position(0, stave_z - tolerance,s_pos_z+s_thick/2));
-	      s_vol.placeVolume(sensor_vol, Position(0, stave_z - tolerance + sensor_y_width,0));
+	      s_vol.placeVolume(sensor_vol, Position(0, stave_z - tolerance + sensor_y_width / 2,0));
 	    }
 	    // Slice placement.
 	    PlacedVolume slice_phv = l_vol.placeVolume(s_vol,Position(curr_x,0,s_pos_z+s_thick/2));

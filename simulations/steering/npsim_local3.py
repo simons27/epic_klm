@@ -24,8 +24,8 @@ SIM.enableGun
 SIM.gun.thetaMin = 90*deg
 SIM.gun.thetaMax = 90*deg
 SIM.gun.distribution = "cos(theta)"
-SIM.gun.phiMin = 22.5*deg
-SIM.gun.phiMax = 22.5*deg
+SIM.gun.phiMin = 0*deg #use 22.5 to hit corner
+SIM.gun.phiMax = 0*deg
 SIM.gun.momentumMin = 5.0*GeV
 SIM.gun.momentumMax = 5.0*GeV
 SIM.gun.particle = "pi-"
@@ -92,7 +92,7 @@ SIM.action.stack = [
     "parameter": {
       "LambdaMin": "180*nm",
       "LambdaMax": "678*nm",
-      "LogicalVolume": "bar_vol",
+      "LogicalVolume": "slice2seg0_1",
       "Efficiency": [e/100. for e in [
         0,    0,    14.0, 14.8, 14.5, 14.9, 14.4, 14.2, 13.9, 14.6, 15.2, 15.7, 16.4, 16.9, 17.5,
         17.7, 18.1, 18.8, 19.3, 19.8, 20.6, 21.4, 22.4, 23.1, 23.6, 24.1, 24.2, 24.6, 24.8, 25.2,
