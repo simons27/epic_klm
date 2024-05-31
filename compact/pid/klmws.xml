@@ -8,7 +8,7 @@
 
     <constant name="CaloSides"                      value="8"/>
     <constant name="HcalEndcapP_length"   value="120.0*cm"/>
-    <constant name="HcalBarrelLength" value="200*cm"/>
+    <constant name="HcalBarrelLength" value="250*cm"/>
 
 
     <comment> definitions from this xml: </comment>
