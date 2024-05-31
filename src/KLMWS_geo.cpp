@@ -157,7 +157,7 @@ static Ref_t create_detector(Detector& description, xml_h e, SensitiveDetector s
 	    //sensor plane
 	    if(s_num == 2) {
 	      //s_vol.placeVolume(sensor_vol, Position(0, stave_z - tolerance,s_pos_z+s_thick/2));
-	      s_vol.placeVolume(sensor_vol, Position(0, stave_z - tolerance + sensor_y_width / 2,0));
+	      s_vol.placeVolume(sensor_vol, Position(0, stave_z - tolerance - sensor_y_width / 2,0));
 	    }
 	    // Slice placement.
 	    PlacedVolume slice_phv = l_vol.placeVolume(s_vol,Position(curr_x,0,s_pos_z+s_thick/2));
