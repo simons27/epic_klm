@@ -8,7 +8,7 @@
 
     <constant name="CaloSides"                      value="8"/>
     <constant name="HcalEndcapP_length"   value="120.0*cm"/>
-    <constant name="HcalBarrelLength" value="250*cm"/>
+    <constant name="HcalBarrelLength" value="150*cm"/>
 
 
     <comment> definitions from this xml: </comment>
@@ -125,7 +125,7 @@
   <!--  Definition of the readout segmentation/definition  -->
   <readouts>
     <readout name="HcalBarrelHits">
-      <segmentation type="CartesianGridXY" grid_size_x="5 * cm" grid_size_y="5 * cm"/>
+      <segmentation type="CartesianGridXY" grid_size_x="50 * um" grid_size_y="50 * um"/>
       <!--<id>system:6,barrel:3,module:4,layer:8,slice:5,x:32:-16,y:-16</id>-->
       <id>system:6,barrel:3,module:4,layer:8,slice:5,x:32:-16,y:-16</id>
     </readout>
