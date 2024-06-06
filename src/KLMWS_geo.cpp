@@ -215,6 +215,7 @@ static Ref_t create_detector(Detector& description, xml_h e, SensitiveDetector s
     DetElement sd = i==0 ? stave_det : stave_det.clone(_toString(i,"stave%d"));
     sd.setPlacement(pv);
     sdet.add(sd);
+    break;
   }
 
   // Set envelope volume attributes.
