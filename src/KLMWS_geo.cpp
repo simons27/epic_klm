@@ -204,6 +204,7 @@ static Ref_t create_detector(Detector& description, xml_h e, SensitiveDetector s
 
   // Create nsides staves.
   for (int i = 0; i < nsides; i++, phi -= dphi)      { // i is module number
+    if(i != 7){continue;}
     // Compute the stave position
     double m_pos_x = mod_x_off * std::cos(phi) - mod_y_off * std::sin(phi);
     double m_pos_y = mod_x_off * std::sin(phi) + mod_y_off * std::cos(phi);
