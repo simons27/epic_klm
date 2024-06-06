@@ -105,13 +105,13 @@ static Ref_t create_detector(Detector& description, xml_h e, SensitiveDetector s
 
 
 	/* QUICK FIX - LIMITED TO 32 SEGMENTS BECAUSE OF SEGMENTATION MASK IN compact/pid/klmws.xml FILE*/
-	int num_segments = 1;
-	//double sensor_thickness = 2 * (l_dim_x - tolerance) / (num_segments);
+	int num_segments = 1; // use for placing only one segment
+	//double sensor_thickness = 2 * (l_dim_x - tolerance) / (num_segments); //use for getting full coverage with N segments
 
 	
-	//int num_segments = std::floor((l_dim_x-tolerance) / (sensor_thickness / 2));
-	//double curr_x = -l_dim_x;
-	double curr_x = 0;
+// 	int num_segments = std::floor((l_dim_x-tolerance) / (sensor_thickness / 2)); //necessary for full seg
+// 	double curr_x = -l_dim_x + sensor_thickness / 2; //Necessary for full segmentation
+	double curr_x = 0; // use for aligning one segment in center
 	int global_s_num = 1;
 	//int global_sensor_num = 1;
 	//double test_s_pos_z = -(l_thickness / 2);
