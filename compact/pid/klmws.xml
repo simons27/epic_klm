@@ -99,20 +99,20 @@
         z="HcalBarrelLength"/>
       <staves vis="HcalBarrelVis"/>
       <layer repeat="HcalScintillatorNbLayers">
-	<!--
+
         <slice material="Steel235"     thickness="HcalSteelThickness" vis="AnlGray"/>
-	-->
+
 	<slice material="AirOptical"  thickness="HcalScintillatorPSThickness" surface="DIRC_MirrorOpticalSurface"/>
 	<!--
         <slice material="PlasticScint_optical" thickness="HcalScintillatorThickness" sensitive="no" limits="cal_limits"/>
 	-->
-        <slice material="DR_Polystyrene" thickness="HcalScintillatorThickness" sensitive="no" limits="cal_limits" surface="DIRC_MirrorOpticalSurface"/>
+        <slice material="DR_Polystyrene" thickness="HcalScintillatorThickness" sensitive="yes" limits="cal_limits" surface="DIRC_MirrorOpticalSurface"/>
 	<slice material="AirOptical"  thickness="HcalScintillatorPSThickness" surface="DIRC_MirrorOpticalSurface"/>
-	<!--
+
         <slice material="AirOptical"  thickness="HcalScintillatorPSThickness"/>
-        <slice material="DR_Polystyrene" thickness="HcalScintillatorThickness" sensitive="no" limits="cal_limits"/>
+        <slice material="DR_Polystyrene" thickness="HcalScintillatorThickness" sensitive="yes" limits="cal_limits"/>
         <slice material="AirOptical"  thickness="HcalScintillatorPSThickness"/>
-	-->
+
       </layer>
       <sensor
         thickness="sensor_thickness"
