@@ -116,19 +116,13 @@ static Ref_t create_detector(Detector& description, xml_h e, SensitiveDetector s
 	//
 	//Trying to just place a single sensor (June 12th)
 	//
-	string sensor_name = _toString(l_num, "sensor%d");
-	double sensor_depth = 1; // Z width of sensor
-	Box    sensor_box("sensor_box",l_dim_x, sensor_y_width / 2, sensor_depth / 2-tolerance);
-	Volume sensor_vol(sensor_name, sensor_box, description.material(xml_sensor.materialStr()));
-	sensor_vol.setVisAttributes(description.visAttributes(xml_sensor.visStr())).setSensitiveDetector(sens);
-	l_vol.placeVolume(sensor_vol, Position(0, stave_z - tolerance - sensor_y_width / 2,0));
-          
+
 	// Loop over segments of the plane
 	for(int curr_segment = 0; curr_segment < num_segments; curr_segment++){
 	  // Loop over the sublayers or slices for this layer.
 	  int s_num = 1;
 	  double s_pos_z = -(l_thickness / 2);
-	  //double sensor_depth = 0; // Z width of sensor
+	  double sensor_depth = 0; // Z width of sensor
 	  //double ps_thick = 0;
 	  for(xml_coll_t si(x_layer,_U(slice)); si; ++si)  {
 	    xml_comp_t x_slice = si;
@@ -140,15 +134,21 @@ static Ref_t create_detector(Detector& description, xml_h e, SensitiveDetector s
 	    DetElement slice(layer,s_name,det_id);
 
 	    slice.setAttributes(description,s_vol,x_slice.regionStr(),x_slice.limitsStr(),x_slice.visStr());
-/*
+
 	    if(s_num == 2){
 	      sensor_depth = s_thick;
 	      //sensor_depth = l_thickness;
 
 	      //ps_thick = s_thick;
 	    }
-*/
 
+	    string sensor_name = _toString(l_num, "sensor%d");
+	    Box    sensor_box("sensor_box",sensor_thickness / 2, sensor_y_width / 2, sensor_depth / 2-tolerance);
+	    Volume sensor_vol(sensor_name, sensor_box, description.material(xml_sensor.materialStr()));
+	    sensor_vol.setVisAttributes(description.visAttributes(xml_sensor.visStr())).setSensitiveDetector(sens);
+	    if (s_num == 2) {
+	      s_vol.placeVolume(sensor_vol, Position(0, stave_z - tolerance - sensor_y_width / 2,0));
+	    }
 	    // addition for reflective scintillator surfaces (incomplete, currently unused):
 	    if ( false ) {
 	      auto surfMgr = description.surfaceManager();
