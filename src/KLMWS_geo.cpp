@@ -152,13 +152,14 @@ static Ref_t create_detector(Detector& description, xml_h e, SensitiveDetector s
 	    //DetElement sensor(slice,seg_name,det_id);
 	    Box    sensor_box("sensor_box", sensor_thickness / 2, sensor_y_width / 2, sensor_depth / 2-tolerance);
 	    Volume sensor_vol(seg_name, sensor_box, description.material(xml_sensor.materialStr()));
-	    sensor_vol.setVisAttributes(description.visAttributes(xml_sensor.visStr())).setSensitiveDetector(sens);
-// 	    sensor_vol.setVisAttributes(description.visAttributes(xml_sensor.visStr()));
+// 	    sensor_vol.setVisAttributes(description.visAttributes(xml_sensor.visStr())).setSensitiveDetector(sens);
+	    sensor_vol.setVisAttributes(description.visAttributes(xml_sensor.visStr()));
 	    //sensor plane
           
-	    if(s_num == 2) {
-	      s_vol.placeVolume(sensor_vol, Position(0, stave_z - tolerance - sensor_y_width / 2,0));
-	    }
+// 	    if(s_num == 3) {
+// 	      s_vol.placeVolume(sensor_vol, Position(0, stave_z - tolerance - sensor_y_width / 2,0));
+            
+// 	    }
         
         if(x_slice.isSensitive()) {
             s_vol.setSensitiveDetector(sens);
