@@ -141,13 +141,20 @@ static Ref_t create_detector(Detector& description, xml_h e, SensitiveDetector s
 
 	      //ps_thick = s_thick;
 	    }
-
-	    string sensor_name = _toString(l_num, "sensor%d");
-	    Box    sensor_box("sensor_box",sensor_thickness / 2, sensor_y_width / 2, sensor_depth / 2-tolerance);
-	    Volume sensor_vol(sensor_name, sensor_box, description.material(xml_sensor.materialStr()));
-	    sensor_vol.setVisAttributes(description.visAttributes(xml_sensor.visStr())).setSensitiveDetector(sens);
+        //far end sensor
+	    string sensor_name_far = _toString(l_num, "sensor_far%d");
+	    Box    sensor_box_far("sensor_box_far",sensor_thickness / 2, sensor_y_width / 2, sensor_depth / 2-tolerance);
+	    Volume sensor_vol_far(sensor_name_far, sensor_box_far, description.material(xml_sensor.materialStr()));
+	    sensor_vol_far.setVisAttributes(description.visAttributes(xml_sensor.visStr())).setSensitiveDetector(sens);
+        
+        //near end sensor
+	    string sensor_name_near = _toString(l_num, "sensor_near%d");
+	    Box    sensor_box_near("sensor_box_near",sensor_thickness / 2, sensor_y_width / 2, sensor_depth / 2-tolerance);
+	    Volume sensor_vol_near(sensor_name_near, sensor_box_near, description.material(xml_sensor.materialStr()));
+	    sensor_vol_near.setVisAttributes(description.visAttributes(xml_sensor.visStr())).setSensitiveDetector(sens);
 	    if (s_num == 2) {
-	      s_vol.placeVolume(sensor_vol, Position(0, stave_z - tolerance - sensor_y_width / 2,0));
+	      s_vol.placeVolume(sensor_vol_far, Position(0, stave_z - tolerance - sensor_y_width / 2,0));
+	      s_vol.placeVolume(sensor_vol_near, Position(0, -stave_z - tolerance + sensor_y_width / 2,0));
 	    }
 	    // addition for reflective scintillator surfaces (incomplete, currently unused):
 	    if ( false ) {
