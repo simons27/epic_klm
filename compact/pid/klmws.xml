@@ -100,7 +100,7 @@
       <staves vis="HcalBarrelVis"/>
       <layer repeat="HcalScintillatorNbLayers">
 
-        <slice material="Steel235"     thickness="HcalSteelThickness" vis="AnlGray"/>
+        <!--<slice material="Steel235"     thickness="HcalSteelThickness" vis="AnlGray"/>-->
 
 	<slice material="AirOptical"  thickness="HcalScintillatorPSThickness" surface="DIRC_MirrorOpticalSurface"/>
 	<!--
