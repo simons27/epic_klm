@@ -80,6 +80,10 @@
     <fraction n="0.00075" ref="Ti"/>
     <fraction n="0.00050" ref="Cu"/>
   </material>
+  <material name="Aluminum_Solenoid">
+    <D value="2.5" unit="g/cm3"/>
+    <fraction n="1" ref="Al"/>
+  </material>
   <material name="SiliconOxide"> <!-- different density than `SiliconDioxide` -->
     <D type="density" value="2.65" unit="g/cm3"/>
     <composite n="1" ref="Si"/>
@@ -506,6 +510,11 @@
     <fraction n="0.9201" ref="Cu"/>
     <fraction n="0.0638" ref="NbTi"/>
     <fraction n="0.0161" ref="Solder"/>
+  </material>
+ <material name="SolenoidCoil_KLM">
+    <D type="density" value="8.5567" unit="g / cm3"/>
+    <fraction n="0.8333" ref="Cu"/>
+    <fraction n="0.1667" ref="NbTi"/>
   </material>
  <material name="LYSO"> <!-- given by the Taiwan Applied Crystals -->
     <D type="density" unit="g/cm3" value="7.125"/>
