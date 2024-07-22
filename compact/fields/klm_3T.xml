@@ -1,0 +1,18 @@
+<!-- SPDX-License-Identifier: LGPL-3.0-or-later -->
+<!-- Copyright (C) 2022 Dmitry Kalinkin, Wouter Deconinck, Whitney Armstrong -->
+
+<lccdd>
+  <fields>
+    <field type="epic_FieldMapB" name="GlobalSolenoid" field_type="magnetic" coord_type="BrBz"
+           field_map="fieldmaps/klm_3T.txt"
+           cache="$DETECTOR_PATH:/opt/detector"
+           scale="1.0">
+      <dimensions>
+        <R step="5.0*cm" min="0*cm" max="180*cm" />
+        <Z step="5.0*cm" min="-345*cm" max="345*cm" />
+        <translationCoord x="0.0*cm" y="0.0*cm" z="0.0*cm" />
+        <rotationField x="0" y="0" z="0" />
+      </dimensions>
+    </field>
+  </fields>
+</lccdd>
