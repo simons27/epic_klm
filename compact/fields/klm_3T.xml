@@ -6,6 +6,7 @@
     <field type="epic_FieldMapB" name="GlobalSolenoid" field_type="magnetic" coord_type="BrBz"
            field_map="fieldmaps/klm3Tfield.txt"
            cache="$DETECTOR_PATH:/opt/detector"
+	   url="https://github.com/simons27/epic_klm/blob/one_sector_solenoid/klm3Tfield.txt"
            scale="1.0">
       <dimensions>
         <R step="5.0*cm" min="0*cm" max="180*cm" />
