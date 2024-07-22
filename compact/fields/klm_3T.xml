@@ -4,7 +4,7 @@
 <lccdd>
   <fields>
     <field type="epic_FieldMapB" name="GlobalSolenoid" field_type="magnetic" coord_type="BrBz"
-           field_map="fieldmaps/klm_3T.txt"
+           field_map="fieldmaps/klm3Tfield.txt"
            cache="$DETECTOR_PATH:/opt/detector"
            scale="1.0">
       <dimensions>
