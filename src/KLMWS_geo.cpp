@@ -167,7 +167,11 @@ static Ref_t create_detector(Detector& description, xml_h e, SensitiveDetector s
 	    PlacedVolume slice_phv = l_vol.placeVolume(s_vol,Position(curr_x,0,s_pos_z+s_thick/2));
 	    slice_phv.addPhysVolID("slice", global_s_num);
 	    slice.setPlacement(slice_phv);
-	    // Increment Z position of slice.
+        Volume vol = slice_phv.volume();
+
+        // Set additional parameter
+        vol.setAttributes("placement", Position(curr_x, 0, s_pos_z + s_thick / 2));
+        // Increment Z position of slice.
 	    s_pos_z += s_thick;
                                         
 	    // Increment slice number.
