@@ -40,7 +40,7 @@ static Ref_t create_detector(Detector& description, xml_h e, SensitiveDetector s
 
   // Sensor plane variables
   xml_comp_t xml_sensor       = x_det.child(_Unicode(sensor));
-  //double     sensor_thickness = xml_sensor.thickness();
+  double     sensor_thickness = xml_sensor.thickness();
   double sensor_y_width = 0.1;
 
   int           nsides    = x_dim.numsides();
@@ -105,13 +105,13 @@ static Ref_t create_detector(Detector& description, xml_h e, SensitiveDetector s
 
 
 	/* QUICK FIX - LIMITED TO 32 SEGMENTS BECAUSE OF SEGMENTATION MASK IN compact/pid/klmws.xml FILE*/
-	int num_segments = 1; // use for placing only one segment
-	double sensor_thickness = 2 * (l_dim_x - tolerance) / (num_segments); //use for getting full coverage with N segments
+// 	int num_segments = 1; // use for placing only one segment
+// 	double sensor_thickness = 2 * (l_dim_x - tolerance) / (num_segments); //use for getting full coverage with N segments
 
 	
-// 	int num_segments = std::floor((l_dim_x-tolerance) / (sensor_thickness / 2)); //necessary for full seg
-// 	double curr_x = -l_dim_x + sensor_thickness / 2; //Necessary for full segmentation
-	double curr_x = 0; // use for aligning one segment in center
+	int num_segments = std::floor((l_dim_x-tolerance) / (sensor_thickness / 2)); //necessary for full seg
+	double curr_x = -l_dim_x + sensor_thickness / 2; //Necessary for full segmentation
+// 	double curr_x = 0; // use for aligning one segment in center
 	int global_s_num = 1;
 	//int global_sensor_num = 1;
 	//double test_s_pos_z = -(l_thickness / 2);
@@ -122,10 +122,13 @@ static Ref_t create_detector(Detector& description, xml_h e, SensitiveDetector s
 	  double s_pos_z = -(l_thickness / 2);
 	  double sensor_depth = 0; // Z width of sensor
 	  //double ps_thick = 0;
+      string seg_name = _toString(curr_segment, "segment%d");
+      Box seg_box(l_dim_x - tolerance, stave_z - tolerance, l_thickness / 2 - tolerance);
+      Volume seg_vol(seg_name, seg_box, air);
 	  for(xml_coll_t si(x_layer,_U(slice)); si; ++si)  {
 	    xml_comp_t x_slice = si;
-	    //string     s_name  = _toString(curr_segment*100+s_num,"slice%d");
-	    string     s_name  = _toString(s_num,"slice%d") + _toString(curr_segment,"seg%d");
+// 	    string     s_name  = _toString(s_num,"slice%d") + _toString(curr_segment,"seg%d"); //WORKING
+	    string     s_name  = _toString(l_num,"layer%d")  + _toString(curr_segment,"seg%d")+ _toString(s_num,"slice%d");
 	    double     s_thick = x_slice.thickness();
 	    Box        s_box(sensor_thickness / 2,stave_z-tolerance,s_thick / 2-tolerance);
 	    Volume     s_vol(s_name,s_box,description.material(x_slice.materialStr()));
@@ -151,26 +154,16 @@ static Ref_t create_detector(Detector& description, xml_h e, SensitiveDetector s
 	      SkinSurface skin(description, sdet, Form("dirc_mirror_optical_surface"), surf, s_name);
 	      skin.isValid();
 	    } 
-	    string seg_name = _toString(curr_segment, "sensor%d");
+	    string sensor_name = _toString(s_num, "sensor%d");
 	    //DetElement sensor(slice,seg_name,det_id);
 	    Box    sensor_box("sensor_box", sensor_thickness / 2, sensor_y_width / 2, sensor_depth / 2-tolerance);
-	    Volume sensor_vol(seg_name, sensor_box, description.material(xml_sensor.materialStr()));
+	    Volume sensor_vol(sensor_name, sensor_box, description.material(xml_sensor.materialStr()));
 	    sensor_vol.setVisAttributes(description.visAttributes(xml_sensor.visStr()));//.setSensitiveDetector(sens);
-	    //sensor_vol.setVisAttributes(description.visAttributes(xml_sensor.visStr()));
-	    //sensor plane
-	    /*
-	    if(s_num == 3 || s_num == 6) {
-	      //s_vol.placeVolume(sensor_vol, Position(0, stave_z - tolerance,s_pos_z+s_thick/2));
-	      s_vol.placeVolume(sensor_vol, Position(0, stave_z - tolerance - sensor_y_width / 2,0));
-	      }*/
+
 	    // Slice placement.
-	    PlacedVolume slice_phv = l_vol.placeVolume(s_vol,Position(curr_x,0,s_pos_z+s_thick/2));
+	    PlacedVolume slice_phv = seg_vol.placeVolume(s_vol,Position(0,0,s_pos_z+s_thick/2));
 	    slice_phv.addPhysVolID("slice", global_s_num);
 	    slice.setPlacement(slice_phv);
-        Volume vol = slice_phv.volume();
-
-        // Set additional parameter
-        vol.setAttributes("placement", Position(curr_x, 0, s_pos_z + s_thick / 2));
         // Increment Z position of slice.
 	    s_pos_z += s_thick;
                                         
@@ -180,6 +173,8 @@ static Ref_t create_detector(Detector& description, xml_h e, SensitiveDetector s
 	  }
 	  //s_pos_z = -(l_thickness / 2);
 	  // Sensor plane construction
+      PlacedVolume seg_phv = l_vol.placeVolume(seg_vol, Position(curr_x, 0, 0));
+      seg_phv.addPhysVolID("segment", curr_segment);
 	  
 	  curr_x += 2 * (l_dim_x - tolerance) / num_segments;	 
 	}
