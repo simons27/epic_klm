@@ -120,8 +120,8 @@ static Ref_t create_detector(Detector& description, xml_h e, SensitiveDetector s
 	double sensor_depth = 1; // Z width of sensor
 	Box    sensor_box("sensor_box",l_dim_x-tolerance, sensor_y_width, sensor_depth / 2-tolerance);
 	Volume sensor_vol(sensor_name, sensor_box, description.material(xml_sensor.materialStr()));
-	sensor_vol.setVisAttributes(description.visAttributes(xml_sensor.visStr())).setSensitiveDetector(sens);
-	l_vol.placeVolume(sensor_vol, Position(0, stave_z - tolerance - sensor_y_width,0));
+// 	sensor_vol.setVisAttributes(description.visAttributes(xml_sensor.visStr())).setSensitiveDetector(sens);
+// 	l_vol.placeVolume(sensor_vol, Position(0, stave_z - tolerance - sensor_y_width,0));
 	
 	//int global_sensor_num = 1;
 	//double test_s_pos_z = -(l_thickness / 2);
@@ -134,13 +134,14 @@ static Ref_t create_detector(Detector& description, xml_h e, SensitiveDetector s
 	  for(xml_coll_t si(x_layer,_U(slice)); si; ++si)  {
 	    xml_comp_t x_slice = si;
 	    //string     s_name  = _toString(curr_segment*100+s_num,"slice%d");
-	    string     s_name  = _toString(s_num,"slice%d") + _toString(curr_segment,"seg%d");
+	    string     s_name  = _toString(curr_segment,"seg%d")+_toString(s_num,"slice%d");
+// 	    string     s_name  = "slice";
 	    double     s_thick = x_slice.thickness();
 	    Box        s_box(sensor_thickness / 2,stave_z-tolerance,s_thick / 2-tolerance);
 	    Volume     s_vol(s_name,s_box,description.material(x_slice.materialStr()));
 	    DetElement slice(layer,s_name,det_id);
-
-	    slice.setAttributes(description,s_vol,x_slice.regionStr(),x_slice.limitsStr(),x_slice.visStr());
+        s_vol.setSensitiveDetector(sens);
+	   slice.setAttributes(description,s_vol,x_slice.regionStr(),x_slice.limitsStr(),x_slice.visStr());
 	    /*
 	    if(s_num == 2){
 	      sensor_depth = s_thick;
@@ -213,9 +214,9 @@ static Ref_t create_detector(Detector& description, xml_h e, SensitiveDetector s
 
   // Create nsides staves.
   for (int i = 0; i < nsides; i++, phi -= dphi)      { // i is module number
-    if(i != 7){
-      continue;
-    }
+//     if(i != 7){
+//       continue;
+//     }
     // Compute the stave position
     double m_pos_x = mod_x_off * std::cos(phi) - mod_y_off * std::sin(phi);
     double m_pos_y = mod_x_off * std::sin(phi) + mod_y_off * std::cos(phi);
@@ -227,7 +228,7 @@ static Ref_t create_detector(Detector& description, xml_h e, SensitiveDetector s
     DetElement sd = i==0 ? stave_det : stave_det.clone(_toString(i,"stave%d"));
     sd.setPlacement(pv);
     sdet.add(sd);
-    break;
+//     break;
   }
 
   // Set envelope volume attributes.
