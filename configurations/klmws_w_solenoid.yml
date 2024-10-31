@@ -1,0 +1,6 @@
+features:
+  solenoid_KLM:
+  pid:
+    klmws:
+  fields:
+    klm_3T:

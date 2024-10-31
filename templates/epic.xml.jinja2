@@ -123,6 +123,14 @@
   <include ref="${DETECTOR_PATH}/compact/fields/marco.xml"/>
 {% endif -%}
 
+{% if 'solenoid_KLM' in features %}
+  <documentation level="5">
+    ## Main magnet and its field
+  </documentation>
+  <include ref="${DETECTOR_PATH}/compact/solenoid_KLM.xml"/>
+  <include ref="${DETECTOR_PATH}/compact/fields/marco.xml"/>
+{% endif -%}
+
 {% if 'fields' in features %}
   <documentation level="5">
     ## Electric and magnetic fields
