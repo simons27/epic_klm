@@ -1,5 +1,9 @@
 features:
+  beampipe:
   solenoid_KLM:
+  tracking:
+    definitions:
+    vertex_barrel:
   pid:
     klmws:
   fields:
