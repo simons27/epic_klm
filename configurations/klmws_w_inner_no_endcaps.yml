@@ -1,0 +1,14 @@
+features:
+  beampipe:
+  solenoid_KLM:
+  tracking:
+    definitions:
+    vertex_barrel:
+    silicon_barrel:
+    mpgd_barrel:
+  pid:
+    klmws:
+  fields:
+    klm_3T:
+  ecal:
+    barrel_interlayers:
