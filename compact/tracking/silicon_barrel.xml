@@ -71,7 +71,7 @@
                thickness="SiBarrelMod1Frame_thickness" />
         <module_component name="ITS3"
                           material="Silicon"
-                          sensitive="true"
+                          sensitive="false"
                           width="SiBarrelStave1_width"
                           length="SiBarrelMod1_length"
                           thickness="SiBarrelSensor_thickness"
@@ -129,7 +129,7 @@
                thickness="SiBarrelMod2Frame_thickness" />
         <module_component name="ITS3"
                           material="Silicon"
-                          sensitive="true"
+                          sensitive="false"
                           width="SiBarrelStave2_width"
                           length="SiBarrelMod2_length"
                           thickness="SiBarrelSensor_thickness"

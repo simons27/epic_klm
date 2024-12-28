@@ -138,7 +138,7 @@
                           length="EcalBarrel_AstroPix_length"
                           thickness="EcalBarrel_AstroPix_thickness"
                           vis="EcalBarrelModuleVis">
-          <slice material="Silicon" thickness="EcalBarrel_SiliconThickness"     vis="EcalBarrelSliceVis" sensitive="yes" limits="cal_limits"/>
+          <slice material="Silicon" thickness="EcalBarrel_SiliconThickness"     vis="EcalBarrelSliceVis" sensitive="no" limits="cal_limits"/>
           <slice material="Silicon" thickness="EcalBarrel_ElectronicsThickness" vis="EcalBarrelSliceVis"/>
           <slice material="Copper" thickness="EcalBarrel_CopperThickness"       vis="EcalBarrelSliceVis"/>
           <slice material="Kapton" thickness="EcalBarrel_KaptonThickness"       vis="EcalBarrelSliceVis"/>
@@ -243,7 +243,7 @@
        space_before="EcalBarrel_FrontSupportThickness + EcalBarrel_ImagingLayerThickness + EcalBarrel_SpaceBetween/2.">
         <slice material="SciFiPb_PbGlue" thickness="EcalBarrel_RadiatorThickness" vis="EcalBarrelFiberLayerVis">
           <fiber material="SciFiPb_Scintillator"
-            sensitive="yes"
+            sensitive="no"
             grid_n_phi="5"
             grid_dr="2*cm"
             radius="EcalBarrel_FiberRadius"
@@ -261,7 +261,7 @@
           thickness="EcalBarrel_ScFiPartThickness/EcalBarrel_FiberBulkLayers_num"
           vis="EcalBarrelFiberLayerVis">
           <fiber material="SciFiPb_Scintillator"
-            sensitive="yes"
+            sensitive="no"
             grid_n_phi="5"
             grid_dr="2*cm"
             radius="EcalBarrel_FiberRadius"

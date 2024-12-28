@@ -71,7 +71,7 @@
       <module name="Module1" vis="VertexLayerVis">
         <module_component name="ITS3"
                           material="Silicon"
-                          sensitive="true"
+                          sensitive="false"
                           width="VertexBarrelStave1_width"
                           length="VertexBarrelMod_length"
                           thickness="SiVertexSensor_thickness"
@@ -80,7 +80,7 @@
       <module name="Module2" vis="VertexLayerVis">
         <module_component name="ITS3"
                           material="Silicon"
-                          sensitive="true"
+                          sensitive="false"
                           width="VertexBarrelStave2_width"
                           length="VertexBarrelMod_length"
                           thickness="SiVertexSensor_thickness"
@@ -89,7 +89,7 @@
       <module name="Module3" vis="VertexLayerVis">
         <module_component name="ITS3"
                           material="Silicon"
-                          sensitive="true"
+                          sensitive="false"
                           width="VertexBarrelStave3_width"
                           length="VertexBarrelMod_length"
                           thickness="SiVertexSensor_thickness"
