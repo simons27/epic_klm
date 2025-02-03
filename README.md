@@ -1,5 +1,18 @@
 [![CI status](https://github.com/eic/epic/actions/workflows/linux-eic-shell.yml/badge.svg)](https://github.com/eic/epic/actions/workflows/linux-eic-shell.yml)
 
+ePIC repository cloned from eic/epic repo for development of K-Long/Muon detector at the EIC
+
+Note about branches:
+1. `master` branch has the most general and least developmental geometry
+1. `sector_scint_segmented` is the current dev branch for running full barrel scint-sensitive events
+   1. this geometry is used by Rowan for energy resolution measurements (see RowanKell/work_eic)
+   1. The scintillator is sensitive here and the sensors are excluded
+   1. The layers are segmented vertically into 3cm wide bars
+   1. Currently the geometry has 2 scint layers of 1cm thick scintillator per superlayer, but see `sector_scint_segmented_no_superlayers` for the non superlayer design 
+1. `sector_scint_segmented_no_superlayers`
+   1. This is the current dev branch for running non-super layer energy resolution measurements
+   1. Same as `sector_scint_segmented` but instead of superlayers we combine the scintillator into 1 bar that is 2cm thick (in radial direction)
+
 Overview
 --------
 
