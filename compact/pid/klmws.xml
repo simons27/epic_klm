@@ -103,7 +103,7 @@
         <slice material="Steel235"     thickness="HcalSteelThickness" vis="AnlGray"/>
 
         <slice material="AirOptical"  thickness="HcalScintillatorPSThickness"/>
-        <slice material="DR_Polystyrene" thickness="HcalScintillatorThickness" sensitive="no" limits="cal_limits"/>
+        <slice material="DR_Polystyrene" thickness="HcalScintillatorThickness" sensitive="yes" limits="cal_limits"/>
         <slice material="AirOptical"  thickness="HcalScintillatorPSThickness"/>
 	
       </layer>

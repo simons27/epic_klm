@@ -140,7 +140,9 @@ static Ref_t create_detector(Detector& description, xml_h e, SensitiveDetector s
 	    Box        s_box(sensor_thickness / 2,stave_z-tolerance,s_thick / 2-tolerance);
 	    Volume     s_vol(s_name,s_box,description.material(x_slice.materialStr()));
 	    DetElement slice(layer,s_name,det_id);
-        if(s_num == 3){s_vol.setSensitiveDetector(sens);}
+        if(x_slice.materialStr() == "DR_Polystyrene"){
+              s_vol.setSensitiveDetector(sens);
+        }
         
 	   slice.setAttributes(description,s_vol,x_slice.regionStr(),x_slice.limitsStr(),x_slice.visStr());
 	    /*
