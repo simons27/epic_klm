@@ -30,7 +30,7 @@
     <constant name="HcalScintillatorNbLayers"       value="14" />
     <constant name="HcalScintillatorPSThickness"    value="300*um" />
     <constant name="HcalScintillatorWidth"          value="40*mm" />
-    <constant name="HcalScintillatorThickness"      value="20*mm" />
+    <constant name="HcalScintillatorThickness"      value="20.0*mm" />
 
     <comment> Single Layer Thickness (for both barrel and endcap)</comment>
     <constant name="HcalScintillatorSingleLayerThickness"
