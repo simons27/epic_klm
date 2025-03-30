@@ -19,6 +19,7 @@
     <constant name="HcalSteelThickness"             value="1.89 * cm" />
     -->
     <constant name="HcalSteelThickness"	value="55.5*mm" />
+<!--     <constant name="HcalSteelThickness"	value="71.725*mm" /> -->
 
     <comment>
       Scintillator light detection in the strip
@@ -31,6 +32,7 @@
     <constant name="HcalScintillatorPSThickness"    value="300*um" />
     <constant name="HcalScintillatorWidth"          value="40*mm" />
     <constant name="HcalScintillatorThickness"      value="20.0*mm" />
+<!--     <constant name="HcalScintillatorThickness"      value="3.775*mm" /> -->
 
     <comment> Single Layer Thickness (for both barrel and endcap)</comment>
     <constant name="HcalScintillatorSingleLayerThickness"
