@@ -19,7 +19,7 @@
     <constant name="HcalSteelThickness"             value="1.89 * cm" />
     -->
     <constant name="HcalSteelThickness"	value="55.5*mm" />
-    <constant name="thick_diff_ratio" value="-0.9"/>
+    <constant name="thick_diff_ratio" value="0"/>
 <!--     <constant name="HcalSteelThickness"	value="71.725*mm" /> -->
 
     <comment>
