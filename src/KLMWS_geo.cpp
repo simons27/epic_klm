@@ -56,6 +56,16 @@ static Ref_t create_detector(Detector& description, xml_h e, SensitiveDetector s
   PolyhedraRegular hedra  (nsides,inner_r,inner_r+totThick+tolerance*2e0,x_dim.z());
   Volume        envelope  (det_name,hedra,air);
   PlacedVolume  env_phv   = motherVol.placeVolume(envelope,Transform3D(Translation3D(0,0,offset)*RotationZ(M_PI/nsides)));
+    
+//   double        thick_diff_ratio = x_dim.thick_diff_ratio();
+//   double        num_layers   = x_dim.num_layers();
+  double        num_layers    = x_det.attr<double>(_Unicode(num_layers));
+  double        thick_diff_ratio    = x_det.attr<double>(_Unicode(thick_diff_ratio));
+  double        HcalSteelThickness    = x_det.attr<double>(_Unicode(HcalSteelThickness));
+  double        HcalScintillatorThickness    = x_det.attr<double>(_Unicode(HcalScintillatorThickness));
+    
+  // Need the scint/steel thickness to be for middle layer
+    
 
   env_phv.addPhysVolID("system",det_id);
   env_phv.addPhysVolID("barrel",0);
@@ -97,16 +107,18 @@ static Ref_t create_detector(Detector& description, xml_h e, SensitiveDetector s
       for (int j=0; j<repeat; j++)    {
         string l_name = _toString(l_num,"layer%d");
         double l_thickness = layering.layer(l_num-1)->thickness();  // Layer's thickness.
-
+    
+        //Need to precompute layer thickness
+        double curr_scint_diff = HcalScintillatorThickness * (-1 * thick_diff_ratio +  (l_num - 1) *(2 * thick_diff_ratio / (num_layers - 1)));
+        double curr_steel_diff = HcalSteelThickness * (-1 * thick_diff_ratio +  (l_num - 1) *(2 * thick_diff_ratio / (num_layers - 1)));
+        l_thickness += curr_scint_diff + curr_steel_diff;
+          
         Position   l_pos(0,0,l_pos_z+l_thickness/2);      // Position of the layer.
         Box        l_box(l_dim_x-tolerance,stave_z-tolerance,l_thickness / 2-tolerance);
         Volume     l_vol(l_name,l_box,air);
         DetElement layer(stave_det, l_name, det_id);
+        
 
-
-	/* QUICK FIX - LIMITED TO 32 SEGMENTS BECAUSE OF SEGMENTATION MASK IN compact/pid/klmws.xml FILE*/
-	//int num_segments = 32;
-	//double sensor_thickness = 2 * (l_dim_x - tolerance) / (num_segments);
 
 	
 	int num_segments = std::floor((l_dim_x-tolerance) / (sensor_thickness / 2));
@@ -120,23 +132,29 @@ static Ref_t create_detector(Detector& description, xml_h e, SensitiveDetector s
 	double sensor_depth = 1; // Z width of sensor
 	Box    sensor_box("sensor_box",l_dim_x-tolerance, sensor_y_width, sensor_depth / 2-tolerance);
 	Volume sensor_vol(sensor_name, sensor_box, description.material(xml_sensor.materialStr()));
-// 	sensor_vol.setVisAttributes(description.visAttributes(xml_sensor.visStr())).setSensitiveDetector(sens);
-// 	l_vol.placeVolume(sensor_vol, Position(0, stave_z - tolerance - sensor_y_width,0));
-	
-	//int global_sensor_num = 1;
-	//double test_s_pos_z = -(l_thickness / 2);
+    double s_thick_accum = 0;
 	// Loop over segments of the plane
 	for(int curr_segment = 0; curr_segment < num_segments; curr_segment++){
 	  // Loop over the sublayers or slices for this layer.
 	  int s_num = 1;
 	  double s_pos_z = -(l_thickness / 2);
-	  //double ps_thick = 0;
 	  for(xml_coll_t si(x_layer,_U(slice)); si; ++si)  {
 	    xml_comp_t x_slice = si;
-	    //string     s_name  = _toString(curr_segment*100+s_num,"slice%d");
 	    string     s_name  = _toString(curr_segment,"seg%d")+_toString(s_num,"slice%d");
-// 	    string     s_name  = "slice";
 	    double     s_thick = x_slice.thickness();
+        double s_thick_orig = s_thick;
+          //Only recalc if using linear_ratio
+        if(thick_diff_ratio != 0){
+            if((x_slice.materialStr() == "DR_Polystyrene") ||(x_slice.materialStr() == "Steel235")){
+                //if using linear_ratio, calculate new thickness
+                //H_distance is half diff in thickness between 0th and Nth layer
+                s_thick = s_thick_orig * (1 - thick_diff_ratio +  (l_num - 1) *(2 * thick_diff_ratio / (num_layers - 1)));
+            }
+        }
+        if(curr_segment == 0){
+            s_thick_accum += s_thick;
+        }
+            
 	    Box        s_box(sensor_thickness / 2,stave_z-tolerance,s_thick / 2-tolerance);
 	    Volume     s_vol(s_name,s_box,description.material(x_slice.materialStr()));
 	    DetElement slice(layer,s_name,det_id);
@@ -145,14 +163,7 @@ static Ref_t create_detector(Detector& description, xml_h e, SensitiveDetector s
         }
         
 	   slice.setAttributes(description,s_vol,x_slice.regionStr(),x_slice.limitsStr(),x_slice.visStr());
-	    /*
-	    if(s_num == 2){
-	      sensor_depth = s_thick;
-	      //sensor_depth = l_thickness;
 
-	      //ps_thick = s_thick;
-	    }
-	    */
 
 	    // addition for reflective scintillator surfaces (incomplete, currently unused):
 	    if ( false ) {
@@ -162,16 +173,7 @@ static Ref_t create_detector(Detector& description, xml_h e, SensitiveDetector s
 	      skin.isValid();
 	    } 
 	    string seg_name = _toString(curr_segment, "sensor%d");
-	    //DetElement sensor(slice,seg_name,det_id);
-	    
-	    //sensor_vol.setVisAttributes(description.visAttributes(xml_sensor.visStr()));
-	    //sensor plane
-	    /*
-	    if(s_num == 2) {
-	      //s_vol.placeVolume(sensor_vol, Position(0, stave_z - tolerance,s_pos_z+s_thick/2));
-	      s_vol.placeVolume(sensor_vol, Position(0, stave_z - tolerance - sensor_y_width,0));
-	    }
-	    */
+
 	    // Slice placement.
 	    PlacedVolume slice_phv = l_vol.placeVolume(s_vol,Position(curr_x,0,s_pos_z+s_thick/2));
 	    slice_phv.addPhysVolID("slice", global_s_num);
@@ -183,8 +185,7 @@ static Ref_t create_detector(Detector& description, xml_h e, SensitiveDetector s
 	    ++s_num;
 	    global_s_num++;
 	  }
-	  //s_pos_z = -(l_thickness / 2);
-	  // Sensor plane construction
+
 	  
 	  curr_x += 2 * (l_dim_x - tolerance) / num_segments;	 
 	}
@@ -200,7 +201,7 @@ static Ref_t create_detector(Detector& description, xml_h e, SensitiveDetector s
         // Increment to next layer Z position.
         double xcut = l_thickness * tan_hphi;
         l_dim_x += xcut;
-        l_pos_z += l_thickness;          
+        l_pos_z += s_thick_accum;          
         ++l_num;
       }
     }
