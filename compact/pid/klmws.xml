@@ -19,7 +19,11 @@
     <constant name="HcalSteelThickness"             value="1.89 * cm" />
     -->
     <constant name="HcalSteelThickness"	value="55.5*mm" />
-    <constant name="thick_diff_ratio" value="0"/>
+<!--     <constant name="preshower_ratio" value="0.14286"/> -->
+    <constant name="preshower_scint_value" value="71.34*mm"/>
+    <constant name="postshower_scint_value" value="29.06*mm"/>
+    <constant name="preshower_steel_value" value="166.4775*mm"/>
+    <constant name="postshower_steel_value" value="19.37*mm"/>
 <!--     <constant name="HcalSteelThickness"	value="71.725*mm" /> -->
 
     <comment>
@@ -94,7 +98,10 @@
       readout="HcalBarrelHits"
       calorimeterType="HAD_BARREL"
       offset="HcalBarrel_offset"
-      thick_diff_ratio="thick_diff_ratio"
+      preshower_scint_value="preshower_scint_value"
+      preshower_steel_value="preshower_steel_value"
+      postshower_scint_value="postshower_scint_value"
+      postshower_steel_value="postshower_steel_value"
       num_layers="HcalScintillatorNbLayers"
       HcalSteelThickness="HcalSteelThickness"
       HcalScintillatorThickness="HcalScintillatorThickness"

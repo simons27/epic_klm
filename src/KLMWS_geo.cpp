@@ -59,8 +59,12 @@ static Ref_t create_detector(Detector& description, xml_h e, SensitiveDetector s
     
 //   double        thick_diff_ratio = x_dim.thick_diff_ratio();
 //   double        num_layers   = x_dim.num_layers();
-  double        num_layers    = x_det.attr<double>(_Unicode(num_layers));
-  double        thick_diff_ratio    = x_det.attr<double>(_Unicode(thick_diff_ratio));
+//   double        num_layers    = x_det.attr<double>(_Unicode(num_layers));
+  double        preshower_scint_value    = x_det.attr<double>(_Unicode(preshower_scint_value));
+  double        preshower_steel_value    = x_det.attr<double>(_Unicode(preshower_steel_value));
+  double        postshower_scint_value    = x_det.attr<double>(_Unicode(postshower_scint_value));
+  double        postshower_steel_value    = x_det.attr<double>(_Unicode(postshower_steel_value));
+    
   double        HcalSteelThickness    = x_det.attr<double>(_Unicode(HcalSteelThickness));
   double        HcalScintillatorThickness    = x_det.attr<double>(_Unicode(HcalScintillatorThickness));
     
@@ -109,9 +113,18 @@ static Ref_t create_detector(Detector& description, xml_h e, SensitiveDetector s
         double l_thickness = layering.layer(l_num-1)->thickness();  // Layer's thickness.
     
         //Need to precompute layer thickness
-        double curr_scint_diff = HcalScintillatorThickness * (-1 * thick_diff_ratio +  (l_num - 1) *(2 * thick_diff_ratio / (num_layers - 1)));
-        double curr_steel_diff = HcalSteelThickness * (-1 * thick_diff_ratio +  (l_num - 1) *(2 * thick_diff_ratio / (num_layers - 1)));
-        l_thickness += curr_scint_diff + curr_steel_diff;
+        if(l_num <=2){
+            double curr_scint_diff =  preshower_scint_value - HcalScintillatorThickness;
+            double curr_steel_diff = preshower_steel_value - HcalSteelThickness;
+            l_thickness += curr_scint_diff + curr_steel_diff;
+        }
+        else{
+            double curr_scint_diff =  postshower_scint_value - HcalScintillatorThickness;
+            double curr_steel_diff = postshower_steel_value - HcalSteelThickness;
+            l_thickness += curr_scint_diff + curr_steel_diff;
+            
+        }
+        
           
         Position   l_pos(0,0,l_pos_z+l_thickness/2);      // Position of the layer.
         Box        l_box(l_dim_x-tolerance,stave_z-tolerance,l_thickness / 2-tolerance);
@@ -142,13 +155,22 @@ static Ref_t create_detector(Detector& description, xml_h e, SensitiveDetector s
 	    xml_comp_t x_slice = si;
 	    string     s_name  = _toString(curr_segment,"seg%d")+_toString(s_num,"slice%d");
 	    double     s_thick = x_slice.thickness();
-        double s_thick_orig = s_thick;
+//         double s_thick_orig = s_thick;
           //Only recalc if using linear_ratio
-        if(thick_diff_ratio != 0){
-            if((x_slice.materialStr() == "DR_Polystyrene") ||(x_slice.materialStr() == "Steel235")){
-                //if using linear_ratio, calculate new thickness
-                //H_distance is half diff in thickness between 0th and Nth layer
-                s_thick = s_thick_orig * (1 - thick_diff_ratio +  (l_num - 1) *(2 * thick_diff_ratio / (num_layers - 1)));
+        if(x_slice.materialStr() == "DR_Polystyrene"){
+            if(l_num <=2){
+                s_thick = preshower_scint_value;
+            }
+            else{
+                s_thick = postshower_scint_value;
+            }
+        }
+        else if(x_slice.materialStr() == "Steel235"){
+            if(l_num <=2){
+                s_thick = preshower_steel_value;
+            }
+            else{
+                s_thick = postshower_steel_value;
             }
         }
         if(curr_segment == 0){
