@@ -20,10 +20,19 @@
     -->
     <constant name="HcalSteelThickness"	value="55.5*mm" />
 <!--     <constant name="preshower_ratio" value="0.14286"/> -->
-    <constant name="preshower_scint_value" value="71.34*mm"/>
+<!--    <constant name="preshower_scint_value" value="71.34*mm"/>
     <constant name="postshower_scint_value" value="29.06*mm"/>
     <constant name="preshower_steel_value" value="166.4775*mm"/>
     <constant name="postshower_steel_value" value="19.37*mm"/>
+-->
+    <constant name="preshower_scint_value" value="20.0*mm" />
+    <constant name="postshower_scint_value" value="20.0*mm" />
+    <constant name="preshower_steel_value" value="55.5*mm" />
+    <constant name="postshower_steel_value" value="55.5*mm" />
+<!--     <constant name="preshower_scint_value" value="14.018632256275346*mm" />
+    <constant name="postshower_scint_value" value="31.77519451086046*mm" />
+    <constant name="preshower_steel_value" value="28.523823744728396*mm" />
+    <constant name="postshower_steel_value" value="49.21772948897225*mm" /> -->
 <!--     <constant name="HcalSteelThickness"	value="71.725*mm" /> -->
 
     <comment>
