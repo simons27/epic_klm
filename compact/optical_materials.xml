@@ -1207,6 +1207,7 @@
       <constant name="FASTTIMECONSTANT" value="2.8*ns"/>
       <constant name="SCINTILLATIONTIMECONSTANT1" value="2.8*ns"/>
       -->
+        <!--<constant name="SCINTILLATIONRISETIME1" value="0.9*ns"/>--> <!-- Added by Rowan May 6 2025 -->
       <property name="SCINTILLATIONCOMPONENT1" ref="scintFast_PS"/>
       <!-- You can reduce the SCINTILLATIONYIELD by a factor of 100 from reference to speed up the simulation; 10/keV seems to be a good rough approximation -->
       <constant name="SCINTILLATIONYIELD" value="10.0/keV"/>
