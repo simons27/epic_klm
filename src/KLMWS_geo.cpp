@@ -60,6 +60,7 @@ static Ref_t create_detector(Detector& description, xml_h e, SensitiveDetector s
 //   double        thick_diff_ratio = x_dim.thick_diff_ratio();
 //   double        num_layers   = x_dim.num_layers();
 //   double        num_layers    = x_det.attr<double>(_Unicode(num_layers));
+  double        division_layer_number    = x_det.attr<double>(_Unicode(division_layer_number));
   double        preshower_scint_value    = x_det.attr<double>(_Unicode(preshower_scint_value));
   double        preshower_steel_value    = x_det.attr<double>(_Unicode(preshower_steel_value));
   double        postshower_scint_value    = x_det.attr<double>(_Unicode(postshower_scint_value));
@@ -113,7 +114,7 @@ static Ref_t create_detector(Detector& description, xml_h e, SensitiveDetector s
         double l_thickness = layering.layer(l_num-1)->thickness();  // Layer's thickness.
     
         //Need to precompute layer thickness
-        if(l_num <=2){
+        if(l_num <=division_layer_number){
             double curr_scint_diff =  preshower_scint_value - HcalScintillatorThickness;
             double curr_steel_diff = preshower_steel_value - HcalSteelThickness;
             l_thickness += curr_scint_diff + curr_steel_diff;
@@ -158,7 +159,7 @@ static Ref_t create_detector(Detector& description, xml_h e, SensitiveDetector s
 //         double s_thick_orig = s_thick;
           //Only recalc if using linear_ratio
         if(x_slice.materialStr() == "DR_Polystyrene"){
-            if(l_num <=2){
+            if(l_num <=division_layer_number){
                 s_thick = preshower_scint_value;
             }
             else{
