@@ -30,7 +30,7 @@
     <constant name="HcalScintillatorNbLayers"       value="14" />
     <constant name="HcalScintillatorPSThickness"    value="300*um" />
     <constant name="HcalScintillatorWidth"          value="40*mm" />
-    <constant name="HcalScintillatorThickness"      value="10*mm" />
+    <constant name="HcalScintillatorThickness"      value="20*mm" />
 
     <comment> Single Layer Thickness (for both barrel and endcap)</comment>
     <constant name="HcalScintillatorSingleLayerThickness"
@@ -106,11 +106,7 @@
 	<!--
         <slice material="PlasticScint_optical" thickness="HcalScintillatorThickness" sensitive="no" limits="cal_limits"/>
 	-->
-        <slice material="DR_Polystyrene" thickness="HcalScintillatorThickness" sensitive="yes" limits="cal_limits" surface="DIRC_MirrorOpticalSurface"/>
-	<slice material="AirOptical"  thickness="HcalScintillatorPSThickness" surface="DIRC_MirrorOpticalSurface"/>
-	
-        <slice material="AirOptical"  thickness="HcalScintillatorPSThickness"/>
-        <slice material="DR_Polystyrene" thickness="HcalScintillatorThickness" sensitive="yes" limits="cal_limits"/>
+        <slice material="DR_Polystyrene" thickness="HcalScintillatorThickness" sensitive="no" limits="cal_limits"/>
         <slice material="AirOptical"  thickness="HcalScintillatorPSThickness"/>
 	
       </layer>

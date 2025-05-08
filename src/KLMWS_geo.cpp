@@ -136,7 +136,7 @@ static Ref_t create_detector(Detector& description, xml_h e, SensitiveDetector s
 	    //if ( x_slice.isSensitive() ) {
 	    //  s_vol.setSensitiveDetector(sens);
 	    //}
-	    if(s_num == 3 || s_num == 6){
+	    if(s_num == 3){
 	      sensor_depth = s_thick;
 	      //sensor_depth = l_thickness;
 
@@ -159,7 +159,7 @@ static Ref_t create_detector(Detector& description, xml_h e, SensitiveDetector s
 	    //sensor_vol.setVisAttributes(description.visAttributes(xml_sensor.visStr()));
 	    //sensor plane
 	    
-	    if(s_num == 3 || s_num == 6) {
+	    if(s_num == 3) {
 	      //s_vol.placeVolume(sensor_vol, Position(0, stave_z - tolerance,s_pos_z+s_thick/2));
 	      s_vol.placeVolume(sensor_vol, Position(0, stave_z - tolerance - sensor_y_width / 2,0));
 	      }
