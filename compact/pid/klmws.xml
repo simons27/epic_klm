@@ -25,16 +25,17 @@
     <constant name="preshower_steel_value" value="166.4775*mm"/>
     <constant name="postshower_steel_value" value="19.37*mm"/>
 -->
-    <constant name="division_layer_number" value="5"/>
+    <constant name="division_layer_number" value="2"/>
     <constant name="preshower_scint_value" value="20.0*mm" />
     <constant name="postshower_scint_value" value="20.0*mm" />
-    <constant name="preshower_steel_value" value="75.5*mm" />
-    <constant name="postshower_steel_value" value="35.5*mm" />
-<!--     <constant name="preshower_scint_value" value="14.018632256275346*mm" />
-    <constant name="postshower_scint_value" value="31.77519451086046*mm" />
-    <constant name="preshower_steel_value" value="28.523823744728396*mm" />
-    <constant name="postshower_steel_value" value="49.21772948897225*mm" /> -->
-<!--     <constant name="HcalSteelThickness"	value="71.725*mm" /> -->
+    <constant name="preshower_steel_value" value="55.5*mm" />
+    <constant name="postshower_steel_value" value="55.5*mm" />
+        
+<!--     <constant name="division_layer_number" value="3" />
+    <constant name="preshower_scint_value" value="20.0*mm" />
+    <constant name="postshower_scint_value" value="20.0*mm" />
+    <constant name="preshower_steel_value" value="0.14955473810434342*mm" />
+    <constant name="postshower_steel_value" value="70.595575980517*mm" /> -->
 
     <comment>
       Scintillator light detection in the strip

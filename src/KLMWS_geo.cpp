@@ -167,7 +167,7 @@ static Ref_t create_detector(Detector& description, xml_h e, SensitiveDetector s
             }
         }
         else if(x_slice.materialStr() == "Steel235"){
-            if(l_num <=2){
+            if(l_num <=division_layer_number){
                 s_thick = preshower_steel_value;
             }
             else{
