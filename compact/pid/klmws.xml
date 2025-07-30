@@ -12,30 +12,15 @@
 
 
     <comment> definitions from this xml: </comment>
-    <!--
-    <constant name="HcalBarrel_offset"              value="(0.0)/2.0" />
-    -->
-    <!--
-    <constant name="HcalSteelThickness"             value="1.89 * cm" />
-    -->
+   
     <constant name="HcalSteelThickness"	value="55.5*mm" />
-<!--     <constant name="preshower_ratio" value="0.14286"/> -->
-<!--    <constant name="preshower_scint_value" value="71.34*mm"/>
-    <constant name="postshower_scint_value" value="29.06*mm"/>
-    <constant name="preshower_steel_value" value="166.4775*mm"/>
-    <constant name="postshower_steel_value" value="19.37*mm"/>
--->
+
     <constant name="division_layer_number" value="2"/>
     <constant name="preshower_scint_value" value="20.0*mm" />
     <constant name="postshower_scint_value" value="20.0*mm" />
-    <constant name="preshower_steel_value" value="55.5*mm" />
-    <constant name="postshower_steel_value" value="55.5*mm" />
+    <constant name="preshower_steel_value" value="70*mm" />
+    <constant name="postshower_steel_value" value="53.08333*mm" />
         
-<!--     <constant name="division_layer_number" value="3" />
-    <constant name="preshower_scint_value" value="20.0*mm" />
-    <constant name="postshower_scint_value" value="20.0*mm" />
-    <constant name="preshower_steel_value" value="0.14955473810434342*mm" />
-    <constant name="postshower_steel_value" value="70.595575980517*mm" /> -->
 
     <comment>
       Scintillator light detection in the strip
@@ -48,7 +33,6 @@
     <constant name="HcalScintillatorPSThickness"    value="300*um" />
     <constant name="HcalScintillatorWidth"          value="40*mm" />
     <constant name="HcalScintillatorThickness"      value="20.0*mm" />
-<!--     <constant name="HcalScintillatorThickness"      value="3.775*mm" /> -->
 
     <comment> Single Layer Thickness (for both barrel and endcap)</comment>
     <constant name="HcalScintillatorSingleLayerThickness"
@@ -76,9 +60,7 @@
 
     <comment> other additions: </comment>
     <constant name="sensor_thickness" value="30*mm" />
-    <!--
-    <constant name="HcalBarrelAvailThickness" value="HcalBarrel_thickness"/>
-    -->
+
     <comment> inserting the following line to cut out RPCs </comment>
     <constant name="HcalBarrelAvailThickness" value="HcalScintillatorAllLayerThickness" />
 
